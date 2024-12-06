@@ -28,7 +28,7 @@ function Completions() {
         </button>
 
         <SideBar />
-        <div className="p-4 sm:ml-64">
+        <div className="p-4 sm:ml-64 container mx-auto">
           <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
             <h1 className="text-green-700 text-4xl">Completed Courses</h1>
             <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-blue-800">

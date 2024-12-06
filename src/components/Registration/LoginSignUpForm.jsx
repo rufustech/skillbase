@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useNavigate } from "react";
 
 function LoginSignup() {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup forms

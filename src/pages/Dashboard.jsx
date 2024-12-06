@@ -1,4 +1,4 @@
-import Lessons from "../components/DashboardComponents/Lessons";
+import DashMainSection from "../components/DashboardComponents/DashMainSection";
 import SideBar from "../components/SideBar";
 
 export default function Dashboard() {
@@ -29,7 +29,7 @@ export default function Dashboard() {
         </button>
 
         <SideBar />
-        <Lessons />
+        <DashMainSection />
       </>
     </div>
   );

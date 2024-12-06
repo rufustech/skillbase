@@ -1,8 +1,7 @@
-// import { Work_Sans } from "next/font/google";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { safetyImage } from "../../assets";
-// import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 
 // const workSans = Work_Sans({
 //   subsets: ["latin"],
@@ -11,6 +10,7 @@ import { safetyImage } from "../../assets";
 export default function LogIn() {
   // for routing
 
+  const navigate = useNavigate();
   // variables
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -36,8 +36,8 @@ export default function LogIn() {
   const [emailErr, setEmailErr] = useState("");
 
   // data from database
-  const url = "https://server-pink-eta-12.vercel.app/api/user";
-  const authUrl = "https://server-pink-eta-12.vercel.app/api/auth/login";
+  const url = "http://localhost:5000/api/user";
+  const authUrl = "http://localhost:5000/api/auth/login";
 
   // condition check
   const conditions = [
@@ -115,7 +115,7 @@ export default function LogIn() {
 
   useEffect(() => {
     isFormValidCheck();
-  }, conditions);
+  }, [conditions]);
 
   // If user has account, triggers different fields
   function userHasNoAcc() {
@@ -148,7 +148,7 @@ export default function LogIn() {
         Cookies.set("name", currentName, { expires: 7 });
         localStorage.setItem("isLoggedIn", true);
         setFormDataToShow(data.message);
-        router.push("/dashboard");
+        navigate("/dashboard");
 
         console.log(username);
       } else {
@@ -183,7 +183,7 @@ export default function LogIn() {
         Cookies.set("name", username, { expires: 7 });
         localStorage.setItem("isLoggedIn", true);
         setFormDataToShow(data.message);
-        router.push("/dashboard");
+        navigate("/dashboard");
       } else {
         setFormDataToShow(data.message);
       }
