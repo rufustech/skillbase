@@ -1,7 +1,11 @@
+
 import SideBar from "../SideBar";
 import CourseCards from "./courseComponents/CourseCards";
+import CourseHero from "./courseComponents/CourseHero";
 
 function Courses() {
+ 
+
   return (
     <div>
       <button
@@ -28,6 +32,7 @@ function Courses() {
       </button>
 
       <SideBar />
+      <CourseHero />
       <CourseCards />
     </div>
   );

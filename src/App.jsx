@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import "./index.css";
-
+import { UserProvider } from "./components/userContext/UserContext"; 
 import Footer from "./components/Footer";
 import SignIn from "./pages/SignIn";
 import SubHeader from "./components/SubHeader";
@@ -14,6 +14,7 @@ import LessonFormSubmit from "./components/trainerComponent/lessonFormSubmit";
 
 function App() {
   return (
+    <UserProvider>
     <BrowserRouter>
       <SubHeader />
       <Routes>
@@ -22,12 +23,13 @@ function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/lessons" element={<Lessons />} />
         <Route path="/certs" element={<Certificates />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard  />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/loadlesson" element={<LessonFormSubmit />} />
       </Routes>
       <Footer />
     </BrowserRouter>
+    </UserProvider>
   );
 }
 
