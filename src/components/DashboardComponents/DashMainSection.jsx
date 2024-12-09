@@ -1,6 +1,9 @@
+
+
 function DashMainSection() {
   return (
-    <div className="p-4 sm:ml-64 container mx-auto">
+    <div className="p-4 sm:ml-64 container mx-auto z-50">
+       <div className="p-4 shadow shadow-lg rounded-lg dark:border-gray-700">
       <section className="relative w-full h-full min-h-screen bg-grey-100 ">
         <div className="hidden absolute z-20 left-0 top-12 w-full h-auto bg-white/90  px-4 py-2  flex-col md:flex-row">
           <button
@@ -39,7 +42,7 @@ function DashMainSection() {
             <section className="w-full lg:w-[50%] flex flex-col lg:translate-x-10 @md:px-2 lg:px-0 p-5 lg:p-10 lg:p-0">
               <div className="w-full h-auto  lg:pt-7  ">
                 <p>Hello Rufaro!</p>
-                <h1 className="__classNameName_8c8ae6 text-2xl lg:text-5xl lg:text-6xl text-gray-700 mb-10 font-extrabold uppercase ">
+                <h1 className="__classNameName_8c8ae6 text-2xl lg:text-5xl lg:text-6xl text-[#432010] mb-10 font-extrabold uppercase ">
                   Welcome to Skillbase{" "}
                 </h1>
                 <h1 className="__classNameName_8c8ae6 text-3xl lg:text-5xl lg:text-6xl  font-extrabold  ">
@@ -50,9 +53,9 @@ function DashMainSection() {
                   healthy workspace
                 </p>
                 <div className="w-full flex items-center text-white justify-start gap-2">
-                  <h3 className="p-4 px-12 shadow-lg text-center text-3xl bg-yellow-600 rounded-full text-white font-bold  shadow-gray-400">
+                  <a href="/courses" className="p-4 px-12 shadow-lg text-center text-3xl bg-[#432010] rounded-full text-white font-bold  shadow-gray-400">
                     Start Training
-                  </h3>
+                  </a>
                 </div>
               </div>
             </section>
@@ -69,11 +72,7 @@ function DashMainSection() {
             <div className="w-full grid  lg:grid-cols-3 gap-5 px-5 lg:px-20">
               <div className="w-full h-auto p-3 flex flex-col items-center gap-3  hover:shadow-lg rounded-xl ">
                 <div className="h-14 w-14 p-2 rounded-xl bg-pink-800 flex items-center justify-center">
-                  <img
-                    src="/hero-section/image/hero19a.png"
-                    alt="Branding"
-                    className="h-10 w-10 object-cover"
-                  />
+               
                 </div>
                 <p className="text-slate-800  text-lg font-bold">
                   Safety Courses
@@ -116,6 +115,7 @@ function DashMainSection() {
           </div>
         </main>
       </section>
+      </div>
     </div>
   );
 }

@@ -30,16 +30,16 @@ function Completions() {
 
         <SideBar />
         <div className="p-4 sm:ml-64 container mx-auto">
-          <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+          <div className="p-4 shadow shadow-lg rounded-lg dark:border-gray-700">
           {/* <h1 className="text-green-700 text-4xl">Completed Courses</h1> */}
 
 
-<section className="ezy__featured34 light py-14 md:py-24 bg-white  text-zinc-900  relative overflow-hidden z-10">
+<section className="ezy__featured34 light py-4 md:py-12 bg-white  text-zinc-900  relative overflow-hidden z-10">
   <div className="container px-4 mx-auto">
     <div className="grid grid-cols-12 mb-12 relative">
       <div className="absolute -right-full -bottom-48   min-w-[250vw] h-[1000px] md:right-1/4" />
       <div className="col-span-12 md:col-span-8 lg:col-span-5 xl:col-span-4 text-start text-zinc-900  relative">
-        <h2 className="text-2xl leading-none md:text-[45px] font-bold mb-6">
+        <h2 className="text-2xl leading-none text-[#432010] md:text-[45px] font-bold mb-6">
           Completed Courses
         </h2>
         <p className="text-lg opacity-80 leading-6 mb-6">
@@ -50,65 +50,81 @@ function Completions() {
     <div className="grid grid-cols-12">
       <div className="col-span-12 lg:col-span-10 lg:col-start-2">
         <div className="relative bg-white  shadow-xl p-4 md:p-16">
-          <div className="grid grid-cols-2 gap-6 text-center">
+          <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-6 text-center">
             {/* item */}
             <div className="col-span-2 md:col-span-1">
-              <div className="bg-white shadow-2xl relative rounded-xl p-6 lg:p-12">
+              <div className="bg-white text-[#432010] h-80 shadow-2xl relative rounded-xl p-2 lg:p-6">
                 <img
                   src={safetycertificate}
                   alt=""
                   className="max-w-full h-auto mx-auto rounded-xl max-h-[200px] object-cover mb-6"
                 />
-                <h4 className="text-2xl font-bold mb-4">Product Design</h4>
-                <p className="opacity-70">
-                  Assumenda non repellendus distinctio nihil dicta sapiente,
-                  quibusdam maiores, illum at, aliquid blanditiis eligendi qui.
-                </p>
+                <h4 className="text-2xl font-bold mb-4">Safety Measures in Mining</h4>
+             
+              </div>
+            </div>
+            <div className="col-span-2 md:col-span-1">
+            <div className="bg-white text-[#432010] h-80 shadow-2xl relative rounded-xl p-2 lg:p-6">
+                <img
+                  src={safetycertificate}
+                  alt=""
+                  className="max-w-full h-auto mx-auto rounded-xl max-h-[200px] object-cover mb-6"
+                />
+                <h4 className="text-2xl font-bold mb-4">Emergency Preparedness in Mining</h4>
+             
               </div>
             </div>
             {/* item */}
             <div className="col-span-2 md:col-span-1">
-              <div className="bg-white shadow-2xl relative rounded-xl p-6 lg:p-12">
+            <div className="bg-white text-[#432010] h-80 shadow-2xl relative rounded-xl p-2 lg:p-6">
                 <img
                   src={safetycertificate}
                   alt=""
                   className="max-w-full h-auto mx-auto rounded-xl max-h-[200px] object-cover mb-6"
                 />
-                <h4 className="text-2xl font-bold mb-4">Branding</h4>
-                <p className="opacity-70">
-                  Man our from light they're cattle upon created female. You
-                  first land evening beast won't had bring first void meat.
-                </p>
+                <h4 className="text-2xl font-bold mb-4">Environmental Impact and Sustainability</h4>
+               
               </div>
             </div>
             {/* item */}
             <div className="col-span-2 md:col-span-1">
-              <div className="bg-white  shadow-2xl relative rounded-xl p-6 lg:p-12">
+            <div className="bg-white text-[#432010] h-80 shadow-2xl relative rounded-xl p-2 lg:p-6">
                 <img
                   src={safetycertificate}
                   alt=""
                   className="max-w-full h-auto mx-auto rounded-xl max-h-[200px] object-cover mb-6"
                 />
-                <h4 className="text-2xl font-bold mb-4">Photography</h4>
-                <p className="opacity-70">
+                <h4 className="text-2xl font-bold mb-4">Electrical Safety in Mining</h4>
+                {/* <p className="opacity-70">
                   Bearing bearing form night spirit, for signs isn't, tree
                   fourth i there two land deep man without seasons fill itself.
-                </p>
+                </p> */}
               </div>
             </div>
-            {/* item */}
             <div className="col-span-2 md:col-span-1">
-              <div className="bg-white  shadow-2xl relative rounded-xl p-6 lg:p-12">
+            <div className="bg-white text-[#432010] h-80 shadow-2xl relative rounded-xl p-2 lg:p-6">
                 <img
                   src={safetycertificate}
                   alt=""
                   className="max-w-full h-auto mx-auto rounded-xl max-h-[200px] object-cover mb-6"
                 />
-                <h4 className="text-2xl font-bold mb-4">Marketing</h4>
-                <p className="opacity-70">
+                <h4 className="text-2xl font-bold mb-4">Mine Site Traffic Management</h4>
+             
+              </div>
+            </div>
+            {/* item */}
+            <div className="col-span-2 md:col-span-1">
+            <div className="bg-white text-[#432010] h-80 shadow-2xl relative rounded-xl p-2 lg:p-6">
+                <img
+                  src={safetycertificate}
+                  alt=""
+                  className="max-w-full h-auto mx-auto rounded-xl max-h-[200px] object-cover mb-6"
+                />
+                <h4 className="text-2xl font-bold mb-4">Hazard Identification in Mining</h4>
+                {/* <p className="opacity-70">
                   Moving seasons, tree you're creeping third behold may be.
                   Whose living for moving female seas heaven unto winged.
-                </p>
+                </p> */}
               </div>
             </div>
           </div>

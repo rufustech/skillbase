@@ -39,11 +39,11 @@ function handleTileClick(){
   }
   return (
     <div className="p-4 sm:ml-64 mx-auto">
-      <h2 className="text-center text-4xl p-4 text-gray-500 font-bold">
+      <h2 className="text-center text-4xl p-4 text-[#432010] font-bold">
         More Safety Courses
       </h2>
       <section className="py-8">
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-4 px-4">
+        <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4 px-4">
         {error && <p className="text-red-500">{error}</p>}
   {courses ? (
     courses.length > 0 ? (
@@ -56,7 +56,7 @@ function handleTileClick(){
         />
       ))
     ) : (
-      <p>No courses available at the moment.</p>
+      <p className="text-lg text-[#432010">No courses available at the moment.</p>
     )
   ) : (
     <p>Loading Courses...</p>

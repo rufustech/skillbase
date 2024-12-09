@@ -30,13 +30,13 @@ function Certificates() {
 
         <SideBar />
         <div className="p-4 sm:ml-64">
-          <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg ">
+          <div className="p-4 shadow shadow-lg rounded-lg ">
             
-            <section className="ezy__featured52 light py-24 md:py-36 bg-white text-black dark:text-white relative overflow-hidden z-10">
+            <section className="ezy__featured52 light py-4 md:py-8 bg-white text-black dark:text-white relative overflow-hidden z-10">
   <div className="container px-4 mx-auto">
     <div className="flex max-w-3xl justify-center text-center mx-auto">
       <div>
-        <h1 className="text-3xl text-zinc-900 font-bold leading-tight md:text-[45px] mb-12">
+        <h1 className="text-3xl text-[#432010] font-bold leading-tight md:text-[45px] mb-12">
         Certificates
         </h1>
       </div>
@@ -89,6 +89,47 @@ function Certificates() {
             Safety in Mining
           </h4>
         </div>
+        <div className="border border-black text-slate-700 flex items-center rounded-xl p-4 mb-4">
+          <div className="flex justify-center items-center text-[15px] p-3 bg-blue-600 text-white rounded-full mr-3">
+            <i className="fas fa-check" />
+          </div>
+          <h4 className="text-[17px]">
+            Safety in Mining
+          </h4>
+        </div>
+        <div className="border border-black text-slate-700 flex items-center rounded-xl p-4 mb-4">
+          <div className="flex justify-center items-center text-[15px] p-3 bg-blue-600 text-white rounded-full mr-3">
+            <i className="fas fa-check" />
+          </div>
+          <h4 className="text-[17px]">
+            Safety in Mining
+          </h4>
+        </div>
+        <div className="border border-black text-slate-700 flex items-center rounded-xl p-4 mb-4">
+          <div className="flex justify-center items-center text-[15px] p-3 bg-blue-600 text-white rounded-full mr-3">
+            <i className="fas fa-check" />
+          </div>
+          <h4 className="text-[17px]">
+            Safety in Mining
+          </h4>
+        </div>
+        <div className="border border-black text-slate-700 flex items-center rounded-xl p-4 mb-4">
+          <div className="flex justify-center items-center text-[15px] p-3 bg-blue-600 text-white rounded-full mr-3">
+            <i className="fas fa-check" />
+          </div>
+          <h4 className="text-[17px]">
+            Safety in Mining
+          </h4>
+        </div>
+        <div className="border border-black text-slate-700 flex items-center rounded-xl p-4 mb-4">
+          <div className="flex justify-center items-center text-[15px] p-3 bg-blue-600 text-white rounded-full mr-3">
+            <i className="fas fa-check" />
+          </div>
+          <h4 className="text-[17px]">
+            Safety in Mining
+          </h4>
+        </div>
+      
       </div>
     </div>
   </div>

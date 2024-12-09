@@ -48,16 +48,16 @@ function CourseHero() {
         <div className="container px-4 mx-auto">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-4">
-              <h2 className="text-4xl md:text-[40px] text-slate-800 font-bold leading-normal mb-4 p-4">
+              <h2 className="text-4xl md:text-[40px] text-[#432010] font-bold leading-normal mb-4 p-4">
                 Your Safety, Our Commitment
               </h2>
-              <p className="text-[24px] leading-normal text-slate-700 p-4 bg-white/70 backdrop-blur-md rounded-md mb-4">
+              <p className="text-[24px] leading-normal text-slate-700 p-4 bg-white/85 backdrop-blur-md rounded-md mb-4">
                 These safety courses are more than training—they’re a promise. A
                 promise to protect you, so you can return home to your family
                 safely every day. Because here at Diamond Mine your safety is
                 our Priority.
               </p>
-              <h3 className="p-4 text-center text-3xl bg-yellow-600 rounded-full text-white font-bold shadow-lg shadow-brown-300">
+              <h3 className="p-4 text-center text-3xl bg-[#432010] rounded-full text-white font-bold shadow-lg shadow-brown-300">
                 Click on the Courses to Begin
               </h3>
             </div>

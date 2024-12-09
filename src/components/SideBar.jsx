@@ -1,10 +1,10 @@
 function SideBar() {
   return (
-    <aside
-      id="default-sidebar"
-      className="fixed top-[64px]  left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-gray-200"
-      aria-label="Sidebar"
-    >
+<aside
+  id="default-sidebar"
+  className="fixed top-[64px] bottom-[250px] left-0 z-40 w-64 transition-transform -translate-x-full sm:translate-x-0 bg-gray-200"
+  aria-label="Sidebar"
+>
       <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 ">
         <ul className="space-y-2 font-medium">
           <li>
