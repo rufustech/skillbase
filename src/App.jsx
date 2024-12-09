@@ -21,10 +21,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/completions" element={<Completions />} />
         <Route path="/courses" element={<Courses />} />
-        <Route path="/lessons" element={<Lessons />} />
+        {/* <Route path="/lessons" element={<Lessons />} /> */}
         <Route path="/certs" element={<Certificates />} />
         <Route path="/dashboard" element={<Dashboard  />} />
         <Route path="/login" element={<SignIn />} />
+        <Route path="/course/:courseId/lessons" component={Lessons} /> {/* Dynamic route */}
         <Route path="/loadlesson" element={<LessonFormSubmit />} />
       </Routes>
       <Footer />

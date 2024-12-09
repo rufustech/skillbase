@@ -1,7 +1,14 @@
+import { useEffect, useState } from "react";
 import { workerLesson } from "../../assets";
 import SideBar from "../SideBar";
 
+
 function Lessons() {
+
+const [title, setTitle] = useState("");
+
+useEffect
+
   return (
     <div>
       <div>
@@ -31,17 +38,16 @@ function Lessons() {
         <SideBar />
 
       
-        <div className="p-4  sm:ml-64">
-        <div className="p-4 shadow shadow-lg rounded-lg dark:border-gray-700">
-
-        <section className="ezy__blogdetails5 light py-4 md:py-8 bg-[#f9fafa] text-zinc-900 ">
-  <div className="container mx-auto px-4">
-  <h4 className="text-4xl font-medium text-[#432010]  justify-center text-center mx-auto mb-2">Safety Measures in Mining</h4>
-    <div className="grid grid-cols-12 gap-5 md:gap-7">
+  <div className="p-4  sm:ml-64">
+    <div className="p-4 shadow shadow-lg rounded-lg dark:border-gray-700">
+      <section className="ezy__blogdetails5 light py-4 md:py-8 bg-[#f9fafa] text-zinc-900 ">
+        <div className="container mx-auto px-4">
+           <h4 className="text-4xl font-medium text-[#432010]  justify-center text-center mx-auto mb-2">Safety Measures in Mining</h4>
+           <div className="grid grid-cols-12 gap-5 md:gap-7">
       {/* sidebar */}
-      <div className="col-span-12 md:col-span-4 lg:col-span-3 order-2 md:order-1">
-        <div>
-          <div>
+            <div className="col-span-12 md:col-span-4 lg:col-span-3 order-2 md:order-1">
+              <div>
+                <div>
             
             <p className="opacity-75">
               Holisticly re-engineer long-term high-impact convergence via
@@ -117,34 +123,7 @@ function Lessons() {
 
           </p>
          
-          <p className="opacity-75 mt-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
-            deleniti doloremque dignissimos nemo accusamus, fuga enim velit
-            nesciunt debitis, sint rerum! Inventore, vero. Numquam voluptatum at
-            accusamus quisquam iste omnis harum voluptatem temporibus obcaecati,
-            ipsa provident architecto illo ea illum, exercitationem totam,
-            ratione consectetur laborum! Beatae, non aspernatur officia
-            architecto perspiciatis odio adipisci ducimus consectetur? Facilis
-            soluta enim molestiae ratione numquam fugit, dicta mollitia atque
-            cupiditate eos debitis esse commodi, eveniet perferendis alias! Ab
-            molestias blanditiis, voluptatem quisquam ratione quibusdam in
-            pariatur fugiat veritatis consequatur, harum alias eos deleniti
-            dicta! Qui necessitatibus, facilis voluptate inventore quod
-            similique voluptates eum, repudiandae aliquid ea eveniet itaque et
-            molestias temporibus debitis consectetur sit quae modi non minima
-            distinctio hic quasi aspernatur! Quas, odit maiores nam veritatis
-            repellat tenetur laboriosam sed incidunt accusantium temporibus
-            sequi reiciendis atque qui dolor alias. Recusandae unde nostrum
-            nobis laudantium, adipisci incidunt? Ex, praesentium exercitationem
-            laudantium consectetur obcaecati illo! Totam nesciunt quos,
-            molestias earum aut ea voluptatum non officiis iure! Eaque
-            necessitatibus aperiam praesentium animi magnam, quo totam tempore
-            quod impedit cupiditate deserunt eveniet unde suscipit, vel
-            consectetur, itaque natus. Asperiores eos cupiditate optio quae aut
-            molestiae fugiat alias id, tempora, dolorem velit, aliquid assumenda
-            aspernatur veniam rerum quisquam!
-          </p>
-          {/* comment */}
+           {/* comment */}
           <div className="bg-blue-600 bg-opacity-10 flex items-start p-6 md:p-12 mt-6 md:mt-12">
             <img
               src="https://cdn.easyfrontend.com/pictures/users/user13.jpg"
