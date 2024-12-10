@@ -25,7 +25,7 @@ function App() {
         <Route path="/certs" element={<Certificates />} />
         <Route path="/dashboard" element={<Dashboard  />} />
         <Route path="/login" element={<SignIn />} />
-        <Route path="/course/:courseId/lessons" component={Lessons} /> {/* Dynamic route */}
+        <Route path="/lessons/courses/:courseId/" element={<Lessons />} /> 
         <Route path="/loadlesson" element={<LessonFormSubmit />} />
       </Routes>
       <Footer />

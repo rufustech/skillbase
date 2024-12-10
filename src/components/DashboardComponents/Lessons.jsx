@@ -1,13 +1,53 @@
-import { useEffect, useState } from "react";
+
+import { useParams } from "react-router-dom";
 import { workerLesson } from "../../assets";
 import SideBar from "../SideBar";
-
+import { useEffect, useState } from "react";
+import LessonCard from "./lessonComponents/lessonCards";
 
 function Lessons() {
 
-const [title, setTitle] = useState("");
+  const [lessons, setLessons] = useState([])
+  const [loading, setLoading] = useState(true);
 
-useEffect
+  //TODO:
+  //Get use the localhost:5000/api/
+
+  //TODO: create Form for Course then  Lessons if time permits
+
+// const [title, setTitle] = useState("");
+ const {courseId} = useParams(); //Destructure get you the value TODO:
+ console.log(courseId);
+
+ async function fetchLesson() {
+  
+  try {
+    const url = `http://localhost:5000/api/lessons/courses/${courseId}`
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const result = await response.json();
+    console.log("API response data:", result.data);
+    if (result.success) {
+      setLessons(result.data); // Extract the array from the `data` key
+    } else {
+      throw new Error("API response does not contain a valid 'data' array.");
+    }
+  } catch (error) {
+    console.error("Unable to fetch data:", error);
+    
+  }
+  
+ }
+
+ useEffect(() => {
+  fetchLesson();
+}, [courseId]);
+ 
+const mainTitle = lessons.length > 0 ? lessons[0].title : "Default Title";
+ 
+
 
   return (
     <div>
@@ -42,7 +82,7 @@ useEffect
     <div className="p-4 shadow shadow-lg rounded-lg dark:border-gray-700">
       <section className="ezy__blogdetails5 light py-4 md:py-8 bg-[#f9fafa] text-zinc-900 ">
         <div className="container mx-auto px-4">
-           <h4 className="text-4xl font-medium text-[#432010]  justify-center text-center mx-auto mb-2">Safety Measures in Mining</h4>
+           <h4 className="text-4xl font-medium text-[#432010]  justify-center text-center mx-auto mb-2"> {mainTitle}</h4>
            <div className="grid grid-cols-12 gap-5 md:gap-7">
       {/* sidebar */}
             <div className="col-span-12 md:col-span-4 lg:col-span-3 order-2 md:order-1">
@@ -105,23 +145,18 @@ useEffect
             alt=""
             className="max-h-[600px] w-full rounded-md object-cover"
           />
-           <h4 className="mt-6 text-[#432010] font-medium text-2xl opacity-75">
-           Safety Measures in Mining
-          </h4>
-          <p className="border-gray-200 border p-5 rounded-lg leading-relaxed text-justify mt-12">
           
-          ### Emergency Response Procedures in Mining
+           <h4 className="mt-6 text-[#432010] font-medium text-2xl opacity-75">
+         
+          </h4>
+             
+          {lessons.length > 0 ? (lessons.map((lesson) => (
+    <LessonCard key={lesson._id} title={lesson.title} content={lesson.content} />
+  ))
+) : (
+  <p>No lessons available.</p>
+)}
 
-            Mining emergencies can happen unexpectedly. A well-prepared response plan is critical for saving lives. Follow these steps when responding to emergencies:
-
-            1. **Alerting the Authorities**: Immediately contact emergency services and report the incident.
-            2. **Evacuation Plan**: Ensure everyone is evacuated from dangerous zones. Follow the designated escape routes.
-            3. **First Aid**: Administer basic first aid to injured workers until professional medical teams arrive.
-            4. **Communication**: Maintain communication with emergency teams and other workers to ensure everyone’s safety.
-
-            Always stay calm and use the right protective gear when responding to emergencies to minimize the risk of injury or fatalities.
-
-          </p>
          
            {/* comment */}
           <div className="bg-blue-600 bg-opacity-10 flex items-start p-6 md:p-12 mt-6 md:mt-12">
