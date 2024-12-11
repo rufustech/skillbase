@@ -4,11 +4,13 @@ import { workerLesson } from "../../assets";
 import SideBar from "../SideBar";
 import { useEffect, useState } from "react";
 import LessonCard from "./lessonComponents/lessonCards";
+import SafetyTip from "./lessonComponents/SafetyTip";
 
 function Lessons() {
 
   const [lessons, setLessons] = useState([])
   const [loading, setLoading] = useState(true);
+  const [courses, setCourseTitle] = useState("")
 
   //TODO:
   //Get use the localhost:5000/api/
@@ -17,6 +19,11 @@ function Lessons() {
 
 // const [title, setTitle] = useState("");
  const {courseId} = useParams(); //Destructure get you the value TODO:
+ 
+ 
+ 
+
+
  console.log(courseId);
 
  async function fetchLesson() {
@@ -41,12 +48,30 @@ function Lessons() {
   
  }
 
+ // Fetch course title
+ async function fetchCourseTitle() {
+  try {
+    const response = await fetch(`http://localhost:5000/api/courses/${courseId}`);
+    const result = await response.json();
+    if (result.success) {
+      console.log("response data",result.data.title);
+      
+      setCourseTitle(result.data.title); // Assuming `title` is part of the returned data
+    }
+  } catch (error) {
+    console.error("Error fetching course title:", error);
+  }
+}
+
+
  useEffect(() => {
   fetchLesson();
+  fetchCourseTitle()
 }, [courseId]);
  
-const mainTitle = lessons.length > 0 ? lessons[0].title : "Default Title";
+const mainTitle = courses.length > 0 ? courses : "Default Title";
  
+// const lessontitle = lessons.length > 0 ? lessons[0].title : "Default Title";
 
 
   return (
@@ -87,16 +112,11 @@ const mainTitle = lessons.length > 0 ? lessons[0].title : "Default Title";
       {/* sidebar */}
             <div className="col-span-12 md:col-span-4 lg:col-span-3 order-2 md:order-1">
               <div>
-                <div>
-            
-            <p className="opacity-75">
-              Holisticly re-engineer long-term high-impact convergence via
-              emerging bandwidth. Distinctively repurpose real-time
-              opportunities without long-term high-impact potentialities.
-              Interactively monetize corporate outsourcing before unique core
-              competencies.
-            </p>
-          </div>
+               
+                         <SafetyTip />
+           
+
+        
           <div className="mt-12">
             <h4 className="text-2xl text-[#432010] font-medium mb-6">LATEST COURSES</h4>
             <div className="border dark:border-gray-600 rounded-md p-8">
@@ -137,24 +157,22 @@ const mainTitle = lessons.length > 0 ? lessons[0].title : "Default Title";
         </div>
       </div>
       {/* main contents */}
-      <div className="col-span-12 md:col-span-8 lg:col-span-9 order-1 md:order-2">
-        <div className="border-gray-300 border shadow-xl p-4 rounded-lg">
+      <div className="col-span-12 ml-1 md:col-span-8 lg:col-span-9 order-1 md:order-2">
+        <div className="border-gray-300 border shadow-xl p-4s rounded-lg">
           <img
             src={workerLesson}
             // src="https://cdn.easyfrontend.com/pictures/blog/blog_13_3.jpg"
             alt=""
-            className="max-h-[600px] w-full rounded-md object-cover"
+            className="max-h-[600px] w-full  rounded-md object-cover"
           />
           
-           <h4 className="mt-6 text-[#432010] font-medium text-2xl opacity-75">
-         
-          </h4>
+          
              
           {lessons.length > 0 ? (lessons.map((lesson) => (
     <LessonCard key={lesson._id} title={lesson.title} content={lesson.content} />
   ))
 ) : (
-  <p>No lessons available.</p>
+  <p className="p-2">No lessons available.</p>
 )}
 
          
@@ -167,84 +185,51 @@ const mainTitle = lessons.length > 0 ? lessons[0].title : "Default Title";
               width={70}
             />
             <div className="ml-4">
-              <h5 className="font-medium text-xl mb-1">George Codex</h5>
-              <p className="opacity-75 mb-2">
-                15 Jan 2022 in Design, Develop, Wordpress
-              </p>
+              <h5 className="font-medium font-bold text-3xl mb-1 px-4 py-2 uppercase">acknowledgement</h5>
+             
               <p className="leading-relaxed text-justify opacity-75">
-                In et volutpat risus. Vestibulum at elementum nibh, at laoreet
-                mauris. Ut eget mi in nisl rhoncus suscipit. Donec sed elementum
-                dui. Sed tempus sagittis gravida. Etiam sit amet aliquam mauris,
-                non sodales sapien. Curabitur non arcu dignissim, consectetur mi
-                ut.
+              <label>
+        <input className="w-8 h-8 border-2 border-blue-500 rounded-sm bg-white" type="checkbox" />
+      
+        <span className="px-4 py-2 justify-center text-2xl">Acknowledge You have read and understood the safety training</span> 
+             
+      </label>
+      
               </p>
             </div>
           </div>
           {/* related posts */}
-          <div className="mt-12 pt-6">
-            <h4 className="text-2xl font-medium mb-4">MORE COURSES</h4>
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              {/* post start */}
-              <div className="mt-4">
-                <div className="flex items-start">
-                  <img
-                    src="https://cdn.easyfrontend.com/pictures/blog/blog_12_4.png"
-                    alt=""
-                    width={50}
-                    className="max-w-full h-auto mr-3"
-                  />
-                  <div>
-                    <a href="#">
-                      <h6 className="font-medium mb-2">
-                        Decide what type of teacher you want to be
-                      </h6>
-                    </a>
-                    <p className="opacity-75">Jun 29</p>
-                  </div>
-                </div>
+          <div className="mt-12 px-16 py-8">
+            <h4 className="text-2xl font-medium mb-4">Take your Assessent</h4>
+
+
+ <a
+              href="/login"
+              className="h-16 w-60 bg-[#432010] flex items-center justify-start rounded-full mt-5 p-1.5  hover:opacity-80 transition "
+            >
+              <span className="flex flex-1 items-center justify-center uppercase text-white text-lg font-bold">
+                Start quiz
+              </span>
+              <div className=" h-9 w-9 bg-[white] rounded-full flex items-center justify-center -rotate-45 ">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={24}
+                  height={24}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-arrow-right"
+                >
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+                <span className="sr-only">Arrow Right Icon</span>
               </div>
-              {/* post start */}
-              <div className="mt-4">
-                <div className="flex items-start">
-                  <img
-                    src="https://cdn.easyfrontend.com/pictures/blog/blog_12_3.png"
-                    alt=""
-                    width={50}
-                    className="max-w-full h-auto mr-3"
-                  />
-                  <div>
-                    <a href="#">
-                      <h6 className="font-medium mb-2">
-                        How I’m Styling Everyday Black Outfits
-                      </h6>
-                    </a>
-                    <p className="opacity-75">Aug 15</p>
-                  </div>
-                </div>
-              </div>
-              {/* post start */}
-              <div className="mt-4">
-                <div className="flex items-start">
-                  <img
-                    src="https://cdn.easyfrontend.com/pictures/blog/blog_12_5.png"
-                    alt=""
-                    width={50}
-                    className="max-w-full h-auto mr-3"
-                  />
-                  <div>
-                    <a
-                      href="#"
-                      className="font-semibold hover:text-blue-600 transition"
-                    >
-                      <h6 className="font-medium mb-2">
-                        Long lasting fall scent for women sale offer
-                      </h6>
-                    </a>
-                    <p className="opacity-75">Sep 17</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </a>
+          
           </div>
         </div>
       </div>

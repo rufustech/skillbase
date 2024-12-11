@@ -59,7 +59,7 @@ function Hero() {
               </li>
               <li className="flex flex-col items-center font-bold p-5 shadow-lg rounded-lg">
                 <p className="text-3xl lg:text-5xl">
-                  10K<span className="text-yellow-700">+</span>
+                  2K<span className="text-yellow-700">+</span>
                 </p>
                 <p>Compliance</p>
               </li>

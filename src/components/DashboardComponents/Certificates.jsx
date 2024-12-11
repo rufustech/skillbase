@@ -37,7 +37,7 @@ function Certificates() {
     <div className="flex max-w-3xl justify-center text-center mx-auto">
       <div>
         <h1 className="text-3xl text-[#432010] font-bold leading-tight md:text-[45px] mb-12">
-        Certificates
+        Completions
         </h1>
       </div>
     </div>
