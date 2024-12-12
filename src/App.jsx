@@ -11,6 +11,7 @@ import Courses from "./components/DashboardComponents/Courses";
 import Lessons from "./components/DashboardComponents/Lessons";
 import Certificates from "./components/DashboardComponents/Certificates";
 import LessonFormSubmit from "./components/trainerComponent/lessonFormSubmit";
+import Admin from "./components/DashboardComponents/Admin";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/lessons/courses/:courseId/" element={<Lessons />} /> 
         <Route path="/loadlesson" element={<LessonFormSubmit />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footer />
     </BrowserRouter>

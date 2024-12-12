@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
+import { urls } from "../../constants";
 
 function CourseCards() {
   const [courses, setCourses] = useState([]);
@@ -7,7 +8,7 @@ function CourseCards() {
 
   async function fetchCourses() {
     try {
-      const url = "http://localhost:5000/api/courses";
+      const url =`${urls.url}/api/courses`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);

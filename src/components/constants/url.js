@@ -1,4 +1,4 @@
-export const url = {
-    url:"http://localhost:5000",
-    // url: "backend.domain@example.com:5000"
+export const urls = {
+    // url:"http://localhost:5000",
+    url: "https://skillbase-backend.onrender.com/"
 }

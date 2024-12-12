@@ -1,4 +1,4 @@
-import { safetyhelmets, safetyImage } from "../assets";
+import { safety3d, safetyhelmets, safetyImage } from "../assets";
 
 function Hero() {
   return (
@@ -7,7 +7,7 @@ function Hero() {
         <section className="w-full h-auto flex flex-col lg:flex-row-reverse  lg:px-16">
           <div className="w-full lg:w-[50%] flex items-center justify-center overflow-hidden">
             <img
-              src={safetyhelmets}
+              src={safety3d}
               alt="https://www.freepik.com/free-psd/helmet-construction-icon-isolated-3d-render-illustration_32704474.htm#fromView=image_search_similar&page=1&position=28&uuid=5ff89a1f-a423-4b94-916d-60f88b391082&new_detail=true"
               className="h-[]  object-cover"
             />

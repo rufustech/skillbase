@@ -5,6 +5,7 @@ import SideBar from "../SideBar";
 import { useEffect, useState } from "react";
 import LessonCard from "./lessonComponents/lessonCards";
 import SafetyTip from "./lessonComponents/SafetyTip";
+import { urls } from "../constants";
 
 function Lessons() {
 
@@ -29,7 +30,7 @@ function Lessons() {
  async function fetchLesson() {
   
   try {
-    const url = `http://localhost:5000/api/lessons/courses/${courseId}`
+    const url = `${urls.url}/api/lessons/courses/${courseId}`
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
@@ -51,7 +52,7 @@ function Lessons() {
  // Fetch course title
  async function fetchCourseTitle() {
   try {
-    const response = await fetch(`http://localhost:5000/api/courses/${courseId}`);
+    const response = await fetch(`${urls.url}/api/courses/${courseId}`);
     const result = await response.json();
     if (result.success) {
       console.log("response data",result.data.title);
@@ -104,7 +105,7 @@ const mainTitle = courses.length > 0 ? courses : "Default Title";
 
       
   <div className="p-4  sm:ml-64">
-    <div className="p-4 shadow shadow-lg rounded-lg dark:border-gray-700">
+    <div className="p-4 shadow shadow rounded-lg dark:border-gray-700">
       <section className="ezy__blogdetails5 light py-4 md:py-8 bg-[#f9fafa] text-zinc-900 ">
         <div className="container mx-auto px-4">
            <h4 className="text-4xl font-medium text-[#432010]  justify-center text-center mx-auto mb-2"> {mainTitle}</h4>
@@ -159,17 +160,12 @@ const mainTitle = courses.length > 0 ? courses : "Default Title";
       {/* main contents */}
       <div className="col-span-12 ml-1 md:col-span-8 lg:col-span-9 order-1 md:order-2">
         <div className="border-gray-300 border shadow-xl p-4s rounded-lg">
-          <img
-            src={workerLesson}
-            // src="https://cdn.easyfrontend.com/pictures/blog/blog_13_3.jpg"
-            alt=""
-            className="max-h-[600px] w-full  rounded-md object-cover"
-          />
+       
           
           
              
           {lessons.length > 0 ? (lessons.map((lesson) => (
-    <LessonCard key={lesson._id} title={lesson.title} content={lesson.content} />
+    <LessonCard key={lesson._id} image={lesson.image} title={lesson.title} content={lesson.content} />
   ))
 ) : (
   <p className="p-2">No lessons available.</p>

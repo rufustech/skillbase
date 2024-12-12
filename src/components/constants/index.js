@@ -1,5 +1,5 @@
-import { url } from "./url";
+import { urls } from "./url";
 
-export {
-    url
+export{
+    urls
 }

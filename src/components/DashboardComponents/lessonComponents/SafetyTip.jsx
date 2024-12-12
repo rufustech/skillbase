@@ -18,6 +18,7 @@ const SafetyTip = () => {
 
   return (
     <div>
+      <h1 className="">SAFETY TIP</h1>
       <h1 className="text-2xl uppercase font-semibold py-2">{randomTip.title}</h1>
       <p className="opacity-75">{randomTip.content}</p>
     </div>
