@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { safetyImage } from "../../assets";
 import { useNavigate } from "react-router-dom";
+import { urls } from "../constants";
 
 export default function LogIn() {
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ export default function LogIn() {
   const [emailErr, setEmailErr] = useState("");
 
   let jwtToken = "";
-  const url = "http://localhost:5000/api/user";
-  const authUrl = "http://localhost:5000/api/auth/login";
+  const url = `${urls.url}/api/user`;
+  const authUrl = `${urls.url}/api/auth/login`;
 
   const conditions = [
     isNameValid,
