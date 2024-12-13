@@ -6,13 +6,13 @@ function About() {
       <section className="bg-white">
         <div className="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
           <div className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-            <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-700 ">
+            <h2 className="mb-4 text-3xl md:text-4xl lg:text-5xl font-semibold text-4xl tracking-tight  text-[#432010]">
               Safety First with Skillbase:
             </h2>
-            <h3 className="text-2xl text-gray-600 pb-2">
+            <h3 className="text-2xl text-gray-600  pb-2">
               Your Trusted Partner in Risk Management
             </h3>
-            <p className="mb-4 text-xl text-gray-600">
+            <p className="mb-4 text-xl text-gray-600 flex justify-evenly">
               At Skillbase, we are safety experts, consultants, and problem
               solvers. Innovators and risk mitigators. Small enough to provide
               personalized attention, but large enough to tackle complex

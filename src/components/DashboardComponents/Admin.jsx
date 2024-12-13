@@ -108,10 +108,12 @@ function Admin() {
     }
   }
 
+  // async function
+
   return (
     <div className="p-4 sm:ml-64">
       <SideBar />
-      <section className="py-12 text-gray-800 sm:py-24">
+      <section className="py-4 text-gray-800 sm:py-4">
         <div className="mx-auto flex max-w-md flex-col rounded-lg lg:max-w-screen-xl lg:flex-row">
           <div className="max-w-2xl px-4 lg:pr-24">
             <p className="mb-2 text-blue-600">Upload Courses and Lessons</p>
@@ -156,10 +158,10 @@ function Admin() {
         </div>
       </section>
 
-      <section className="py-12 text-gray-800 sm:py-24">
+      <section className="py-4 text-gray-800 sm:py-24">
         <div className="mx-auto flex max-w-md flex-col rounded-lg lg:max-w-screen-xl lg:flex-row">
-          <form className="w-full p-4">
-            <div className="border border-gray-100 shadow-gray-500/20 mt-8 mb-8 max-w-md bg-white shadow-sm sm:rounded-lg sm:shadow-lg lg:mt-0">
+          <form className=" p-4">
+            <div className="border border-gray-100 shadow-gray-500/20 my-4 max-w-md bg-white shadow-sm sm:rounded-lg sm:shadow-lg lg:mt-0">
               <div className="relative border-b border-gray-300 p-4 py-8 sm:px-8">
                 <h3 className="mb-1 text-3xl font-medium">Lesson Title</h3>
               </div>

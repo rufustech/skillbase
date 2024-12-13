@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { safetyImage } from "../../assets";
 import { useNavigate } from "react-router-dom";
-import { urls } from "../constants";
 
 // const workSans = Work_Sans({
 //   subsets: ["latin"],
@@ -10,8 +9,6 @@ import { urls } from "../constants";
 
 export default function LogIn() {
   // for routing
-
-
 
   const navigate = useNavigate();
   // variables
@@ -39,8 +36,8 @@ export default function LogIn() {
   const [emailErr, setEmailErr] = useState("");
 
   // data from database
-  const url = `${urls.url}/api/user`;
-  const authUrl = `${urls.url}/api/auth/login`;
+  const url = "http://localhost:5000/api/user";
+  const authUrl = "http://localhost:5000/api/auth/login";
 
   // condition check
   const conditions = [
@@ -61,12 +58,8 @@ export default function LogIn() {
     }
   }
   function emailConditions(currentEmail) {
-    if (
-      currentEmail.match(emailRegex) &&
-      currentEmail.length !== 0 &&
-      currentEmail.match()
-    ) {
-      setEmail(currentEmail);
+    setEmail(currentEmail);
+    if (currentEmail.match(emailRegex)) {
       setIsEmailValid(true);
       setEmailErr("");
     } else {
@@ -130,35 +123,27 @@ export default function LogIn() {
   }
 
   // ONCLICK HANDLE SIGN IN OR ACC CREATE BELOW
-  async function handleSignIn(currentName) {
+  async function handleSignIn() {
     try {
       const res = await fetch(authUrl, {
         method: "POST",
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-Type": "application/json" },
       });
-      console.log(`response :`, res);
+
       const data = await res.json();
 
-      console.log(`data :`, data);
-      if (data.message === "Login successful") {
+      if (res.ok) {
         Cookies.set("userToken", data.token, { expires: 7 });
-        Cookies.set("name", currentName, { expires: 7 });
+        Cookies.set("name", data.name, { expires: 7 });
         localStorage.setItem("isLoggedIn", true);
-        setFormDataToShow(data.message);
         navigate("/dashboard");
-
-        console.log(username);
       } else {
-        setFormDataToShow(data.message);
+        setFormDataToShow(data.message || "Login failed. Try again.");
       }
     } catch (error) {
-      console.log(`error fetching data.`, error);
+      console.error("Error during login:", error);
+      setFormDataToShow("Network error. Please try again.");
     }
   }
 
@@ -220,7 +205,7 @@ export default function LogIn() {
                   }}
                 />
                 <p className="text-red-500 text-xs italic min-h-[20px]">
-                  {usernameErr && usernameErr}
+                  {usernameErr}
                 </p>
               </div>
             )}

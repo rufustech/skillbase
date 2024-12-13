@@ -22,7 +22,7 @@ function SubHeader() {
   };
 
   return (
-    <nav className="sticky bg-[#f9fafb] top-0 w-full flex justify-between relative h-16 items-center border-b px-3 md:px-10 lg:px-20 z-50">
+    <nav className="sticky bg-[#f9fafb] top-0 w-full shadow-sm flex justify-between relative h-16 items-center border-b px-3 md:px-10 lg:px-20 z-50">
       <div className="flex items-center gap-2">
         <a href="/">
           <img
