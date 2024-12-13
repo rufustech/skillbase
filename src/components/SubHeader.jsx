@@ -17,6 +17,7 @@ function SubHeader() {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigate("/");
   };

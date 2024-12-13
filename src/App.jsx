@@ -1,3 +1,7 @@
+
+
+
+
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import "./index.css";
@@ -14,6 +18,7 @@ import LessonFormSubmit from "./components/trainerComponent/lessonFormSubmit";
 import Admin from "./components/DashboardComponents/Admin";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -22,17 +27,22 @@ function App() {
         <ConditionalSubHeader />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route element={<PrivateRoute />}>
           <Route path="/completions" element={<Completions />} />
           <Route path="/courses" element={<Courses />} />
-          <Route path="/about" element={<About />} />
+         
           {/* <Route path="/lessons" element={<Lessons />} /> */}
           <Route path="/certs" element={<Certificates />} />
-          <Route path="/contact" element={<Contact />} />
+          
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/login" element={<SignIn />} />
+          
           <Route path="/lessons/courses/:courseId/" element={<Lessons />} />
           <Route path="/loadlesson" element={<LessonFormSubmit />} />
           <Route path="/admin" element={<Admin />} />
+          </Route>
         </Routes>
         <Footer />
       </BrowserRouter>
