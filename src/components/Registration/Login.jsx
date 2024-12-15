@@ -184,7 +184,7 @@ export default function LogIn() {
                     User Name
                   </label>
                   <input
-                    className="appearance-none bg-white border-double border-2 border-[#432010] block w-full text-gray-700 border rounded py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                    className="appearance-none h-16 bg-white border-double border-1 border-[#432010] block w-full text-gray-700 border rounded py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                     id="grid-first-name"
                     type="text"
                     placeholder="Enter your Name"
@@ -207,7 +207,7 @@ export default function LogIn() {
                   Email
                 </label>
                 <input
-                  className="appearance-none bg-white border-double border-2 border-[#432010] block w-full text-gray-700 border rounded py-4 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none h-16 bg-white border-double border-1 border-[#432010] block w-full text-gray-700 border rounded py-4 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-last-name"
                   type="text"
                   placeholder="example@email.com"
@@ -232,7 +232,7 @@ export default function LogIn() {
                   Password
                 </label>
                 <input
-                  className="appearance-none bg-white border-double border-2 border-[#432010] block w-full text-gray-700 border rounded py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none h-16 bg-white border-double border-1 border-[#432010] block w-full text-gray-700 border rounded py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-password"
                   type="password"
                   placeholder=""
@@ -257,7 +257,7 @@ export default function LogIn() {
                     Confirm Password
                   </label>
                   <input
-                    className="appearance-none bg-white border-double border-2 border-[#432010] block w-full text-gray-700 border rounded py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="appearance-none h-16 bg-white border-double border-1 border-[#432010] block w-full text-gray-700 border rounded py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     id="grid-password-confirm"
                     type="password"
                     placeholder=""

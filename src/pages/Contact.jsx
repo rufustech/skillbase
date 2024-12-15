@@ -18,12 +18,12 @@ function Contact() {
                 <div className="w-1/2">
                   <label
                     htmlFor="name_field"
-                    className="block text-sm text-gray-500"
+                    className="block text-xl text-gray-500"
                   >
                     Your Name:
                   </label>
                   <input
-                    className="rounded border-gray-400 w-full p-2 border"
+                    className="rounded border-gray-400 h-14 w-full p-2 border"
                     type="text"
                     name="name"
                     id="name_field"
@@ -32,12 +32,12 @@ function Contact() {
                 <div className="w-1/2">
                   <label
                     htmlFor="email_field"
-                    className="block text-sm text-gray-500"
+                    className="block text-xl text-gray-500"
                   >
                     Email Address:
                   </label>
                   <input
-                    className="rounded border-gray-400 w-full p-2 border"
+                    className="rounded border-gray-400 h-14 w-full p-2 border"
                     type="email"
                     name="email"
                     id="email_field"
@@ -47,7 +47,7 @@ function Contact() {
               <div className="mb-4">
                 <label
                   htmlFor="message_field"
-                  className="block text-sm text-gray-500"
+                  className="block text-xl text-gray-500"
                 >
                   Message:
                 </label>
@@ -61,7 +61,7 @@ function Contact() {
               </div>
               <button
                 type="submit"
-                className="rounded-full text-white font-bold bg-[#432010] px-12 py-2 hover:scale-95 hover:text-[#432010] hover:bg-[white] hover:border-4 hover:border-double border-yellow-700 cursor-pointer hover:opacity-80 transition"
+                className="rounded-full text-white font-bold bg-[#432010] px-12 py-4 hover:scale-95 hover:text-[#432010] hover:bg-[white] hover:border-4 hover:border-double border-yellow-700 cursor-pointer hover:opacity-80 transition"
               >
                 Let Us Know
               </button>

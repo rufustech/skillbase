@@ -15,9 +15,9 @@ function LoginSignup() {
 
       {isLogin ? (
         <form>
-          <div>
+          <div className="w-40">
             <label>Email:</label>
-            <input type="email" placeholder="Enter email" />
+            <input className="" type="email" placeholder="Enter email" />
           </div>
           <div>
             <label>Password:</label>

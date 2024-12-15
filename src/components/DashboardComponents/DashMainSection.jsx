@@ -147,7 +147,7 @@ function DashMainSection() {
             </div> */}
             <main className=" relative  ">
               <div className="flex flex-col lg:flex-row  ">
-                <section className="flex ">
+                <section className="flex md:pt-10 md:pl-20">
                   <div className="w-full h-auto  lg:pt-7  ">
                     <p className="pb-4">Hello Rufaro!</p>
                     <h1 className="__classNameName_8c8ae6  text-2xl lg:text-5xl lg:text-6xl text-[#432010] mb-10 font-extrabold uppercase ">
