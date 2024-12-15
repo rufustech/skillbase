@@ -1,9 +1,7 @@
-
-
 function CourseHero() {
   return (
-  <div className="p-4 sm:ml-64 mx-autos">
-    <section className="ezy__service20 light py-4 md:py-12  mx-auto text-zinc-900  relative z-[1] overflow-hidden">
+    <div className="p-4 sm:ml-64 mx-autos">
+      <section className="ezy__service20 light py-4 md:py-12  mx-auto text-zinc-900  relative z-[1] overflow-hidden">
         {/* shape one */}
         <svg
           className="absolute -bottom-[20%] left-0 -z-[1]"
@@ -34,7 +32,7 @@ function CourseHero() {
             fillOpacity="0.5"
           />
         </svg>
-        
+
         <svg
           className="absolute -top-[20%] right-0 -z-[1]"
           width={340}
@@ -57,15 +55,15 @@ function CourseHero() {
                 safely every day. Because here at Diamond Mine your safety is
                 our Priority.
               </p>
-              <h3 className="p-4 text-center text-3xl bg-[#432010] rounded-full text-white font-bold shadow-lg shadow-brown-300">
-                Click on the Courses to Begin
+              <h3 className="p-4 text-center text-3xl rounded-full text-[#432010] font-bold shadow-lg ">
+                Get your safety training
               </h3>
             </div>
             <div className="col-span-12 md:col-span-8">
               <div className="grid grid-cols-2 gap-6 gap-x-5">
                 <div className="col-span-2 md:col-span-1">
                   <div>
-                    <div className="shadow h-full p-3">
+                    <div className="shadow border-black border-2 h-full p-3">
                       <div className="p-4 lg:p-8">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-cannabis" />
@@ -80,7 +78,7 @@ function CourseHero() {
                         </p>
                       </div>
                     </div>
-                    <div className="shadow h-full p-3 mt-4">
+                    <div className="shadow border-black border-2 h-full p-3 mt-4">
                       <div className="p-4 lg:p-8">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-ribbon" />
@@ -97,9 +95,9 @@ function CourseHero() {
                     </div>
                   </div>
                 </div>
-                <div className="col-span-2 md:col-span-1">
+                <div className="col-span-2  md:col-span-1">
                   <div className="md:mt-12">
-                    <div className="bg-white shadow h-full p-3 md:mt-4">
+                    <div className="bg-white border-black border-2 shadow h-full p-3 md:mt-4">
                       <div className="p-4 lg:p-8">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-camera" />
@@ -113,7 +111,7 @@ function CourseHero() {
                         </p>
                       </div>
                     </div>
-                    <div className="bg-white  shadow h-full p-3 mt-4">
+                    <div className="bg-white border-black border-2 shadow h-full p-3 mt-4">
                       <div className="p-4 lg:p-8">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fab fa-asymmetrik" />
@@ -135,9 +133,8 @@ function CourseHero() {
           </div>
         </div>
       </section>
-      </div>
-
-  )
+    </div>
+  );
 }
 
-export default CourseHero
+export default CourseHero;

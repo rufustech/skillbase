@@ -4,10 +4,9 @@ const currentYear = new Date().getFullYear();
 
 function Footer() {
   return (
-    <footer className="w-full bg-gray-100 rounded-lg shadow m-4 z-50  bottom-0">
-
-      <div className="w-full max-w-screen-xl mx-auto md:py-8">
-        <div className="sm:flex sm:items-center sm:justify-between">
+    <footer className="w-full bg-gray-100 bottom-0 rounded-lg shadow m-4 z-50">
+      <div className="w-full  mx-auto md:py-8">
+        <div className="sm:flex px-20 sm:items-center sm:justify-between">
           <a
             href="https://skillbase.ca/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"

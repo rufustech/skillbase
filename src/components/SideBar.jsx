@@ -1,4 +1,6 @@
 function SideBar() {
+
+  
   return (
     <aside
       id="default-sidebar"
