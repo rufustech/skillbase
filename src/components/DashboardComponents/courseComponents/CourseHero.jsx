@@ -44,7 +44,7 @@ function CourseHero() {
           <circle cx={389} cy={389} r={389} fill="#0d6efd" fillOpacity="0.19" />
         </svg>
         <div className="container px-4 mx-auto">
-          <div className="grid grid-cols-12 gap-6">
+          <div className="grid xl:grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-4">
               <h2 className="text-4xl md:text-[40px] text-[#432010] font-bold leading-normal mb-4 p-4">
                 Your Safety, Our Commitment
@@ -55,15 +55,15 @@ function CourseHero() {
                 safely every day. Because here at Diamond Mine your safety is
                 our Priority.
               </p>
-              <h3 className="p-4 text-center text-3xl rounded-full text-[#432010] font-bold shadow-lg ">
+              <h3 className="p-4 text-center text-3xl rounded-full text-[#432010] font-bold shadow-lg shadow-lg border-double border-0.5 border-[#432010] border">
                 Get your safety training
               </h3>
             </div>
             <div className="col-span-12 md:col-span-8">
-              <div className="grid grid-cols-2 gap-6 gap-x-5">
+              <div className="grid lg:grid-cols-2 gap-6 gap-x-5">
                 <div className="col-span-2 md:col-span-1">
                   <div>
-                    <div className="shadow border-black border-2 h-full p-3">
+                    <div className="shadow-lg border-double border-1 border-[#432010] border h-full p-3">
                       <div className="p-4 lg:p-8">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-cannabis" />
@@ -78,7 +78,7 @@ function CourseHero() {
                         </p>
                       </div>
                     </div>
-                    <div className="shadow border-black border-2 h-full p-3 mt-4">
+                    <div className="shadow-lg border-double border-1 border-[#432010] border  h-full p-3 mt-4">
                       <div className="p-4 lg:p-8">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-ribbon" />
@@ -97,7 +97,7 @@ function CourseHero() {
                 </div>
                 <div className="col-span-2  md:col-span-1">
                   <div className="md:mt-12">
-                    <div className="bg-white border-black border-2 shadow h-full p-3 md:mt-4">
+                    <div className="bg-white opacity-90 shadow-lg border-double border-1 border-[#432010] border h-full p-3 md:mt-4">
                       <div className="p-4 lg:p-8">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-camera" />
@@ -111,7 +111,7 @@ function CourseHero() {
                         </p>
                       </div>
                     </div>
-                    <div className="bg-white border-black border-2 shadow h-full p-3 mt-4">
+                    <div className="bg-white shadow-lg border-double border-1 border-[#432010] border h-full p-3 mt-4">
                       <div className="p-4 lg:p-8">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fab fa-asymmetrik" />
