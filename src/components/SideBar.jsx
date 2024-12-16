@@ -1,6 +1,4 @@
 function SideBar() {
-
-  
   return (
     <aside
       id="default-sidebar"
@@ -76,7 +74,7 @@ function SideBar() {
           </li>
           <li>
             <a
-              href="/safety-stats"
+              href="#"
               className="flex items-center p-2 text-gray-900 rounded-lg text-xl font-semibold"
             >
               <svg
@@ -132,7 +130,7 @@ function SideBar() {
           </li>
           <li>
             <a
-              href="Incident Reporting Systems"
+              href="#"
               className="flex items-center p-2 text-gray-900 rounded-lg text-xl font-semibold"
             >
               <svg

@@ -19,6 +19,7 @@ import Admin from "./components/DashboardComponents/Admin";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PrivateRoute from "./components/PrivateRoute";
+import IncidentReporting from "./components/DashboardComponents/IncidentReporting";
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
           <Route element={<PrivateRoute />}>
           <Route path="/completions" element={<Completions />} />
           <Route path="/courses" element={<Courses />} />
-         
+          <Route path="/incident-reporting" element={<IncidentReporting />} />
           {/* <Route path="/lessons" element={<Lessons />} /> */}
           <Route path="/certs" element={<Certificates />} />
           

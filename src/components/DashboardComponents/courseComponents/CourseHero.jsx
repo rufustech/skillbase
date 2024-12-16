@@ -55,7 +55,7 @@ function CourseHero() {
                 safely every day. Because here at Diamond Mine your safety is
                 our Priority.
               </p>
-              <h3 className="p-4 text-center text-3xl rounded-full text-[#432010] font-bold shadow-lg shadow-lg border-double border-0.5 border-[#432010] border">
+              <h3 className="p-4 text-center md:text-xl xl:text-3xl rounded-full text-[#432010] font-bold shadow-lg shadow-lg border-double border-0.5 border-[#432010] border">
                 Get your safety training
               </h3>
             </div>
