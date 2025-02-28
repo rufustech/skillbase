@@ -70,7 +70,7 @@ export default function LogIn() {
   function passwordConfirmConditions(currentPwConfirm) {
     if (currentPwConfirm !== password) {
       setIsPassConfirmValid(false);
-      setPasswordConfirmErr("Confirm password does not match password.");
+      setPasswordConfirmErr("Confirm password does not match password");
     } else {
       setIsPassConfirmValid(true);
       setPasswordConfirmErr("");
