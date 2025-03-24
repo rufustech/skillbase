@@ -1,7 +1,3 @@
-
-
-
-
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import "./index.css";
@@ -35,11 +31,8 @@ function App() {
           <Route path="/completions" element={<Completions />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/incident-reporting" element={<IncidentReporting />} />
-          {/* <Route path="/lessons" element={<Lessons />} /> */}
           <Route path="/certs" element={<Certificates />} />
-          
           <Route path="/dashboard" element={<Dashboard />} />
-          
           <Route path="/lessons/courses/:courseId/" element={<Lessons />} />
           <Route path="/loadlesson" element={<LessonFormSubmit />} />
           <Route path="/admin" element={<Admin />} />
