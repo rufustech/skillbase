@@ -11,15 +11,7 @@ function Lessons() {
   const [loading, setLoading] = useState(true);
   const [courses, setCourseTitle] = useState("");
 
-  //TODO:
-  //Get use the localhost:5000/api/
-
-  //TODO: create Form for Course then  Lessons if time permits
-
-  // const [title, setTitle] = useState("");
-  const { courseId } = useParams(); //Destructure get you the value TODO:
-
-  console.log(courseId);
+  const { courseId } = useParams(); // Destructure to get the courseId from the URL
 
   async function fetchLesson() {
     try {
@@ -29,9 +21,8 @@ function Lessons() {
         throw new Error(`Response status: ${response.status}`);
       }
       const result = await response.json();
-      console.log("API response data:", result.data);
       if (result.success) {
-        setLessons(result.data); // Extract the array from the `data` key
+        setLessons(result.data); // Set lessons data
       } else {
         throw new Error("API response does not contain a valid 'data' array.");
       }
@@ -46,8 +37,6 @@ function Lessons() {
       const response = await fetch(`${urls.url}/api/courses/${courseId}`);
       const result = await response.json();
       if (result.success) {
-        console.log("response data", result.data.title);
-
         setCourseTitle(result.data.title); // Assuming `title` is part of the returned data
       }
     } catch (error) {
@@ -61,8 +50,6 @@ function Lessons() {
   }, [courseId]);
 
   const mainTitle = courses.length > 0 ? courses : "Default Title";
-
-  // const lessontitle = lessons.length > 0 ? lessons[0].title : "Default Title";
 
   return (
     <div>
@@ -92,12 +79,11 @@ function Lessons() {
 
         <SideBar />
 
-        <div className="p-4  sm:ml-64">
+        <div className="p-4 sm:ml-64">
           <div className="p-4 shadow shadow rounded-lg dark:border-gray-700">
             <section className="ezy__blogdetails5 light py-4 md:py-8 bg-[#f9fafa] text-zinc-900 ">
               <div className="container mx-auto px-4">
                 <h4 className="text-4xl font-medium text-[#432010]  justify-center text-center mx-auto mb-2">
-                  {" "}
                   {mainTitle}
                 </h4>
                 <div className="grid grid-cols-12 gap-5 md:gap-7">
@@ -114,7 +100,6 @@ function Lessons() {
                           <ul className="flex flex-col">
                             <li className="border-b dark:border-b-gray-600 py-2">
                               <i className="fas fa-comment mr-" />
-
                               <a
                                 href="#"
                                 className="font-semibold hover:text-blue-600 transition"
@@ -124,7 +109,6 @@ function Lessons() {
                             </li>
                             <li className="border-b dark:border-b-gray-600 py-2">
                               <i className="fas fa-comment " />
-
                               <a
                                 href="#"
                                 className="font-semibold hover:text-blue-600 transition"
@@ -134,7 +118,6 @@ function Lessons() {
                             </li>
                             <li className="py-2">
                               <i className="fas fa-comment " />
-
                               <a
                                 href="#"
                                 className="font-semibold hover:text-blue-600 transition"
@@ -156,7 +139,7 @@ function Lessons() {
                             key={lesson._id}
                             image={lesson.image}
                             title={lesson.title}
-                            content={lesson.content}
+                            content={<div dangerouslySetInnerHTML={{ __html: lesson.content }} />}
                           />
                         ))
                       ) : (
@@ -182,7 +165,6 @@ function Lessons() {
                                 className="w-8 h-8 border-2 border-blue-500 rounded-sm bg-white"
                                 type="checkbox"
                               />
-
                               <span className="px-4 py-2  justify-center lg:text-2xl">
                                 Acknowledge You have read and understood the
                                 safety training
@@ -191,15 +173,16 @@ function Lessons() {
                           </p>
                         </div>
                       </div>
+
                       {/* related posts */}
                       <div className="mt-12 px-16 py-8">
                         <h4 className="text-2xl font-medium mb-4">
-                          Take your Assessent
+                          Take your Assessment
                         </h4>
 
                         <a
-                          href="#"
-                          className="h-16 lg:w-60 bg-[#432010] flex items-center justify-start rounded-full mt-5 p-1.5  hover:opacity-80 transition "
+                          href="/quiz"
+                          className="h-16 lg:w-60 bg-[#432010] flex items-center justify-start rounded-full mt-5 p-1.5 hover:opacity-80 transition "
                         >
                           <span className="flex flex-1 items-center justify-center uppercase text-white lg:text-lg font-bold">
                             Start quiz
