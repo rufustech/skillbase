@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  engwomanCreateCourse,
   safetyhelmets,
-  womanengineer,
   womanengineerfrnt,
 } from "../../assets";
 import { useNavigate } from "react-router-dom";
@@ -11,24 +9,28 @@ function DashMainSection() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [username, setUsername] = useState("");
 
-  // Check login status on component mount
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedInStatus);
+
+    const storedName = localStorage.getItem("username");
+    if (storedName) {
+      setUsername(storedName);
+    }
   }, []);
 
-  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     setIsLoggedIn(false);
     navigate("/");
   };
 
-  // Toggle menu
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
@@ -219,7 +221,7 @@ function DashMainSection() {
               <div className="flex flex-col lg:flex-row  ">
                 <section className="grid lg:grid-cols-2 md:pt-10 md:pl-20">
                   <div className="w-full h-auto  lg:pt-7  ">
-                    <p className="pb-4">Hello Rufaro!</p>
+                    <p className="pb-4">Hello {username}</p>
                     <h1 className="__classNameName_8c8ae6  text-2xl lg:text-5xl lg:text-6xl text-[#432010] mb-10 font-extrabold uppercase ">
                       Welcome <br /> to Skillbase{" "}
                     </h1>

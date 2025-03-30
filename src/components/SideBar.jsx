@@ -1,4 +1,17 @@
+import { useEffect, useState } from "react";
+
 function SideBar() {
+
+  const [username, setUsername] = useState("");
+
+    useEffect(() => {
+   
+      const storedName = localStorage.getItem("username");
+      if (storedName) {
+        setUsername(storedName);
+      }
+    }, []);
+
   return (
     <aside
       id="default-sidebar"
@@ -23,7 +36,7 @@ function SideBar() {
                 <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
               </svg>
               <span className="ms-3 font-semibold text-2xl text-[#432010]">
-                Welcome Rufaro
+                Welcome {username}
               </span>
             </a>
           </li>

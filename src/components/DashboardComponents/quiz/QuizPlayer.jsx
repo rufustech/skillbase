@@ -11,8 +11,15 @@ function QuizPlayer() {
   const [submitted, setSubmitted] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
+
+    const storedName = localStorage.getItem("username");
+    if (storedName) {
+      setUsername(storedName);
+    }
+
     async function fetchQuiz() {
       try {
         const res = await fetch(`${urls.url}/api/quiz/course/${courseId}`);
@@ -76,11 +83,13 @@ function QuizPlayer() {
   const currentQuestion = quiz.questions[currentQ];
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-      <h2 className="text-3xl font-bold mb-6 text-center">{quiz.title}</h2>
+    <div className="max-w-3xl min-h-screen  mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+     
+      <h2 className="text-2xl font-bold mb-6 text-center">{quiz.title}</h2>
 
       {!submitted ? (
         <div>
+           <h2 className="text-xl font-bold mb-6 text-left">Good Luck on the Assessment {username}</h2>
           <h3 className="text-lg font-semibold mb-4">
             Question {currentQ + 1} of {quiz.questions.length}
           </h3>
@@ -121,7 +130,7 @@ function QuizPlayer() {
           {getScorePercent() >= 80 ? (
             <>
               <p className="text-green-600 font-medium mb-4">
-                🎉 Congratulations! You passed.
+                🎉 Congratulations! {username} You passed.
               </p>
               <button className="mt-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">
                 Download Certificate

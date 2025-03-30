@@ -30,10 +30,10 @@ function App() {
           <Route path="/contact" element={<Contact />} />
        
           <Route path="/quiz/course/:courseId/" element={<QuizPlayer />} />
-
+          <Route path="/courses" element={<Courses />} />
           <Route element={<PrivateRoute />}>
           <Route path="/completions" element={<Completions />} />
-          <Route path="/courses" element={<Courses />} />
+          
           <Route path="/incident-reporting" element={<IncidentReporting />} />
           <Route path="/certs" element={<Certificates />} />
           <Route path="/dashboard" element={<Dashboard />} />

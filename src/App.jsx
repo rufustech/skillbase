@@ -28,6 +28,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/contact" element={<Contact />} />
+          
           <Route element={<PrivateRoute />}>
           <Route path="/completions" element={<Completions />} />
           <Route path="/courses" element={<Courses />} />
