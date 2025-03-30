@@ -1,7 +1,9 @@
 function Quiz() {
   return (
-    <div>
+    <div className="mt-40">
       Hello
+      
+
     </div>
   )
 }

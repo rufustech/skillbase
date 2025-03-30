@@ -6,10 +6,14 @@ import LessonCard from "./lessonComponents/lessonCards";
 import SafetyTip from "./lessonComponents/SafetyTip";
 import { urls } from "../constants";
 
+
+
 function Lessons() {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [courses, setCourseTitle] = useState("");
+  const [acknowledged, setAcknowledged] = useState(false);
+
 
   const { courseId } = useParams(); // Destructure to get the courseId from the URL
 
@@ -161,10 +165,13 @@ function Lessons() {
 
                           <p className="leading-relaxed flex text- opacity-75">
                             <label>
-                              <input
-                                className="w-8 h-8 border-2 border-blue-500 rounded-sm bg-white"
-                                type="checkbox"
-                              />
+                            <input
+  className="w-8 h-8 border-2 border-blue-500 rounded-sm bg-white"
+  type="checkbox"
+  checked={acknowledged}
+  onChange={(e) => setAcknowledged(e.target.checked)}
+/>
+
                               <span className="px-4 py-2  justify-center lg:text-2xl">
                                 Acknowledge You have read and understood the
                                 safety training
@@ -181,32 +188,41 @@ function Lessons() {
                         </h4>
 
                         <a
-                          href="/quiz"
-                          className="h-16 lg:w-60 bg-[#432010] flex items-center justify-start rounded-full mt-5 p-1.5 hover:opacity-80 transition "
-                        >
-                          <span className="flex flex-1 items-center justify-center uppercase text-white lg:text-lg font-bold">
-                            Start quiz
-                          </span>
-                          <div className=" h-9 w-9 bg-[white] rounded-full flex items-center justify-center -rotate-45 ">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width={24}
-                              height={24}
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="lucide lucide-arrow-right"
-                            >
-                              <path d="M5 12h14"></path>
-                              <path d="m12 5 7 7-7 7"></path>
-                            </svg>
-                            <span className="sr-only">Arrow Right Icon</span>
-                          </div>
-                        </a>
+  href={acknowledged ? `/quiz/course/${courseId}` : "#"}
+  onClick={(e) => {
+    if (!acknowledged) e.preventDefault();
+  }}
+  className={`h-16 lg:w-60 flex items-center justify-between rounded-full mt-5 p-4 transition
+    ${acknowledged ? "bg-[#432010] text-white hover:opacity-80" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+>
+  <span className="uppercase text-lg font-bold">Start Quiz</span>
+  <div className={`h-9 w-9 ${acknowledged ? "bg-white text-[#432010]" : "bg-gray-100 text-gray-400"} rounded-full flex items-center justify-center -rotate-45`}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-arrow-right"
+    >
+      <path d="M5 12h14" />
+      <path d="m12 5 7 7-7 7" />
+    </svg>
+    <span className="sr-only">Arrow Right Icon</span>
+  </div>
+</a>
+
+
+
+
                       </div>
+
+
+
                     </div>
                   </div>
                 </div>

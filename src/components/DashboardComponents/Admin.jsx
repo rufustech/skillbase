@@ -214,8 +214,9 @@ function Admin() {
         body: JSON.stringify({
           title: quizTitle,
           questions: questions,
-          course: selectedCourseId, // Assuming selectedCourseId is already being set when creating courses
+          course: selectedCourseId,
         }),
+        
       });
 
       if (!response.ok) throw new Error("Failed to create quiz.");
@@ -241,11 +242,11 @@ function Admin() {
         
         {/* Create Course Form */}
         <div className="grid md:grid-cols-2">
-          <div className="p-4 mb-16">
+          <div className="p-4 mb-8">
             <img className="rounded-lg" src={courseCreate} alt="" />
           </div>
-          <div className="lg:p-24">
-            <form onSubmit={handleCreateCourse} className="mt-8 ">
+          <div className="lg:px-24">
+            <form onSubmit={handleCreateCourse} className="mt-0 ">
               <label className="text-xl" htmlFor="courseName">Course Name:</label>
               <input
                 id="courseName"
@@ -282,9 +283,9 @@ function Admin() {
         </div>
 
         {/* Create Lesson Form */}
-        <div className="grid md:grid-cols-2 mt-16">
-          <div className="lg:p-12">
-            <form onSubmit={handleCreateLesson} className="mt-16">
+        <div className="grid md:grid-cols-2 mb-8 mt-16">
+          <div className="lg:px-12">
+            <form onSubmit={handleCreateLesson} className="mt-2">
               <label htmlFor="selectedCourse" className="mt-4">Select Course</label>
               <select
                 id="selectedCourse"
@@ -347,10 +348,10 @@ function Admin() {
         </div>
 
         {/* Quiz Creation Section */}
-        <div className="grid md:grid-cols-2 mt-16">
-          <div className="lg:p-12">
-            <form onSubmit={handleCreateQuiz} className="mt-16">
-              <label htmlFor="quizTitle" className="mt-4">Quiz Title</label>
+        <div className="grid md:grid-cols-2 mt-2">
+          <div className="lg:px-12">
+            <form onSubmit={handleCreateQuiz} className="mt-4">
+              <label htmlFor="quizTitle" className="mt-4 text-2xl font-bold">Quiz Title</label>
               <input
                 id="quizTitle"
                 className="block w-full h-14 p-2 mt-2 border rounded-lg"

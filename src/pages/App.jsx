@@ -16,6 +16,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PrivateRoute from "./components/PrivateRoute";
 import IncidentReporting from "./components/DashboardComponents/IncidentReporting";
+import QuizPlayer from "../components/DashboardComponents/quiz/QuizPlayer";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/contact" element={<Contact />} />
+       
+          <Route path="/quiz/course/:courseId/" element={<QuizPlayer />} />
+
           <Route element={<PrivateRoute />}>
           <Route path="/completions" element={<Completions />} />
           <Route path="/courses" element={<Courses />} />
@@ -36,6 +40,7 @@ function App() {
           <Route path="/lessons/courses/:courseId/" element={<Lessons />} />
           <Route path="/loadlesson" element={<LessonFormSubmit />} />
           <Route path="/admin" element={<Admin />} />
+          {/* <Route path="/quiz/course/:courseId/" element={<QuizPlayer />} /> */}
           </Route>
         </Routes>
         <Footer />
