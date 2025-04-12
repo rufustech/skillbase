@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  engwomanCreateCourse,
   safetyhelmets,
-  womanengineer,
   womanengineerfrnt,
 } from "../../assets";
 import { useNavigate } from "react-router-dom";
@@ -11,24 +9,28 @@ function DashMainSection() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [username, setUsername] = useState("");
 
-  // Check login status on component mount
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
     setIsLoggedIn(loggedInStatus);
+
+    const storedName = localStorage.getItem("username");
+    if (storedName) {
+      setUsername(storedName);
+    }
   }, []);
 
-  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user");
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     setIsLoggedIn(false);
     navigate("/");
   };
 
-  // Toggle menu
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
@@ -183,43 +185,12 @@ function DashMainSection() {
       <div className="p-4 sm:ml-64 container mx-auto z-50">
         <div className="p-12 shadow shadow-lg rounded-lg dark:border-gray-700">
           <section className="relative mx-auto w-full h-full min-h-screen bg-grey-100 ">
-            {/* <div className="hidden absolute z-20 left-0 top-12 w-full h-auto bg-white/90  px-4 py-2  flex-col md:flex-row">
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                Home
-              </button>
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                Features
-              </button>
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                Blog
-              </button>
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                Contact us
-              </button>
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                About
-              </button>
-            </div> */}
+           
             <main className=" relative  ">
               <div className="flex flex-col lg:flex-row  ">
                 <section className="grid lg:grid-cols-2 md:pt-10 md:pl-20">
                   <div className="w-full h-auto  lg:pt-7  ">
-                    <p className="pb-4">Hello Rufaro!</p>
+                    <p className="pb-4">Hello <span className="capitalize">{username}</span> </p>
                     <h1 className="__classNameName_8c8ae6  text-2xl lg:text-5xl lg:text-6xl text-[#432010] mb-10 font-extrabold uppercase ">
                       Welcome <br /> to Skillbase{" "}
                     </h1>

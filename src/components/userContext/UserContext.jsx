@@ -1,35 +1,24 @@
-import { createContext, useContext, useState, useEffect } from "react";
+// userContext/UserContext.js
+import  { createContext, useContext, useState, useEffect } from "react";
 
-// Create the context
-export const UserContext = createContext();
+const UserContext = createContext();
 
-// Create a provider component
-export function UserProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem("userToken") || "");
-  const [email, setEmail] = useState(() => localStorage.getItem("email") || "");
+export const useUser = () => useContext(UserContext);
 
-  // Check if the token exists to set the login state
-  const isLoggedIn = !!token;
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
 
-  // Save token and email to localStorage whenever they change
   useEffect(() => {
+    const token = localStorage.getItem("token"); // or HTTP-only cookies
     if (token) {
-      localStorage.setItem("userToken", token);
-      localStorage.setItem("email", email);
-    } else {
-      localStorage.removeItem("userToken");
-      localStorage.removeItem("email");
+      const decodedToken = JSON.parse(atob(token.split(".")[1])); // decode JWT
+      setUser({ role: decodedToken.role, username: decodedToken.username });
     }
-  }, [token, email]);
+  }, []);
 
   return (
-    <UserContext.Provider value={{ token, setToken, email, setEmail, isLoggedIn }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );
-}
-
-// Custom Hook to use UserContext
-export function useUserContext() {
-  return useContext(UserContext);
-}
+};

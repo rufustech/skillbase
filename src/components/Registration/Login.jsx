@@ -117,24 +117,33 @@ export default function LogIn() {
         body: JSON.stringify({ email, password }),
         headers: { "Content-Type": "application/json" },
       });
-
+  
       const data = await res.json();
-
+      console.log("Login response:", data);
+  
       if (res.ok) {
+        const name = data?.user?.username;
+        
+        if (name) {
+          Cookies.set("name", name, { expires: 7 });
+          localStorage.setItem("username", name);
+        } else {
+          console.warn("Username not found in login response.");
+        }
+  
         Cookies.set("userToken", data.token, { expires: 7 });
-        Cookies.set("name", data.name, { expires: 7 });
         localStorage.setItem("isLoggedIn", true);
-        localStorage.setItem("token", data?.token);
-
-        data?.token ? navigate("/dashboard") : navigate("/");
+        localStorage.setItem("token", data.token);
+        navigate("/dashboard");
       } else {
-        setFormDataToShow(data.message || "Login failed. Try again.");
+        setFormDataToShow(data.message || "Login failed");
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Login error:", error);
       setFormDataToShow("Network error. Please try again.");
     }
   }
+  
 
   async function handleCreateAcc() {
     try {
@@ -144,30 +153,40 @@ export default function LogIn() {
           username: username,
           email: email,
           password: password,
-          name: username,
-          createdAt: Date.UTC,
         }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-
+  
       const data = await res.json();
-      console.log(data.message);
-
-      if (data.message === "User created successfully") {
-        Cookies.set("userToken", data.token, { expires: 7 });
-        Cookies.set("name", username, { expires: 7 });
+      console.log("Create user response:", data);
+  
+      if (data.success) {
+        // Save username from backend or fallback to input value
+        const storedName = data.user?.username || username;
+  
         localStorage.setItem("isLoggedIn", true);
+        localStorage.setItem("username", storedName);
+        Cookies.set("name", storedName, { expires: 7 });
+  
+        // Only store token if your backend sends it
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          Cookies.set("userToken", data.token, { expires: 7 });
+        }
+  
         setFormDataToShow(data.message);
         navigate("/dashboard");
       } else {
         setFormDataToShow(data.message);
       }
     } catch (error) {
-      console.log("error fetching data", error);
+      console.error("error creating user:", error);
+      setFormDataToShow("Something went wrong. Please try again.");
     }
   }
+  
 
   return (
     <>
