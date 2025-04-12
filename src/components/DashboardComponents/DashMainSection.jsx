@@ -185,38 +185,7 @@ function DashMainSection() {
       <div className="p-4 sm:ml-64 container mx-auto z-50">
         <div className="p-12 shadow shadow-lg rounded-lg dark:border-gray-700">
           <section className="relative mx-auto w-full h-full min-h-screen bg-grey-100 ">
-            {/* <div className="hidden absolute z-20 left-0 top-12 w-full h-auto bg-white/90  px-4 py-2  flex-col md:flex-row">
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                Home
-              </button>
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                Features
-              </button>
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                Blog
-              </button>
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                Contact us
-              </button>
-              <button
-                className="uppercase text-gray-800 text-xs lg:text-sm font-bold focus:bg-pink-300
-           hover:bg-pink-300 px-2 h-full py-1 rounded transition-all duration-300"
-              >
-                About
-              </button>
-            </div> */}
+           
             <main className=" relative  ">
               <div className="flex flex-col lg:flex-row  ">
                 <section className="grid lg:grid-cols-2 md:pt-10 md:pl-20">

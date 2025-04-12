@@ -29,6 +29,7 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/contact" element={<Contact />} />
        
+       
           <Route path="/quiz/course/:courseId/" element={<QuizPlayer />} />
           <Route path="/courses" element={<Courses />} />
           <Route element={<PrivateRoute />}>
