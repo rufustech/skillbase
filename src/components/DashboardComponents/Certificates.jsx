@@ -1,7 +1,24 @@
+import { useEffect, useState } from "react";
 import { ppe } from "../../assets";
 import SideBar from "../SideBar";
 
 function Certificates() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedInStatus);
+
+    const storedName = localStorage.getItem("username");
+    if (storedName) {
+      setUsername(storedName);
+    }
+  }, []);
+
+
+
   return (
     <div>
       <div>
@@ -37,7 +54,7 @@ function Certificates() {
     <div className="flex max-w-3xl justify-center text-center mx-auto">
       <div>
         <h1 className="text-3xl text-[#432010] font-bold leading-tight md:text-[45px] mb-12">
-        Completions
+       <span className="capitalize">{username}</span>  Completions
         </h1>
       </div>
     </div>

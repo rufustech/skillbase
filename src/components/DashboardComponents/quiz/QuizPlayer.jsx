@@ -89,7 +89,7 @@ function QuizPlayer() {
 
       {!submitted ? (
         <div>
-           <h2 className="text-xl font-bold mb-6 text-left">Good Luck on the Assessment {username}</h2>
+           <h2 className="text-xl font-bold mb-6 text-left">Good Luck on the Assessment <span className="capitalize">{username}</span> </h2>
           <h3 className="text-lg font-semibold mb-4">
             Question {currentQ + 1} of {quiz.questions.length}
           </h3>
@@ -130,7 +130,7 @@ function QuizPlayer() {
           {getScorePercent() >= 80 ? (
             <>
               <p className="text-green-600 font-medium mb-4">
-                🎉 Congratulations! {username} You passed.
+                🎉 Congratulations! <span className="capitalize">{username}</span>  You passed.
               </p>
               <button className="mt-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">
                 Download Certificate

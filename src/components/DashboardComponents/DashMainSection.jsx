@@ -190,7 +190,7 @@ function DashMainSection() {
               <div className="flex flex-col lg:flex-row  ">
                 <section className="grid lg:grid-cols-2 md:pt-10 md:pl-20">
                   <div className="w-full h-auto  lg:pt-7  ">
-                    <p className="pb-4">Hello {username}</p>
+                    <p className="pb-4">Hello <span className="capitalize">{username}</span> </p>
                     <h1 className="__classNameName_8c8ae6  text-2xl lg:text-5xl lg:text-6xl text-[#432010] mb-10 font-extrabold uppercase ">
                       Welcome <br /> to Skillbase{" "}
                     </h1>

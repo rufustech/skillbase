@@ -1,7 +1,23 @@
+import { useEffect, useState } from "react";
 import { safetycertificate } from "../../assets";
 import SideBar from "../SideBar";
 
 function Completions() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedInStatus);
+
+    const storedName = localStorage.getItem("username");
+    if (storedName) {
+      setUsername(storedName);
+    }
+  }, []);
+
+ 
   return (
     <div>
       <div>
@@ -43,7 +59,7 @@ function Completions() {
           Completed Courses
         </h2>
         <p className="text-lg opacity-80 leading-6 mb-6">
-          Hello Rufaro your Completed Courses
+          Hello {username} your Completed Courses
         </p>
       </div>
     </div>
