@@ -298,7 +298,17 @@ export default function LogIn() {
                 >
                   Create Here!
                 </button>
-
+                <div className="text-center w-full">
+                  Forgot Password?
+                <a href="/reset-password"
+                  className="text-red-600 text-lg "
+                
+                >
+                  Reset Password!
+                  
+                </a>
+                </div>
+               
                 {formDataToShow && (
                   <p>
                     username or password does not match our records, please try

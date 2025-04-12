@@ -17,6 +17,7 @@ import Contact from "./pages/Contact";
 import PrivateRoute from "./components/PrivateRoute";
 import IncidentReporting from "./components/DashboardComponents/IncidentReporting";
 import QuizPlayer from "./components/DashboardComponents/quiz/QuizPlayer";
+import Reset from "./components/Registration/Reset";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<SignIn />} />
+          <Route path="/reset-password" element={<Reset />} />
           <Route path="/contact" element={<Contact />} />
           <Route element={<PrivateRoute />}>
           <Route path="/completions" element={<Completions />} />
