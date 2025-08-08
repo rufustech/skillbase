@@ -43,50 +43,50 @@ function CourseHero() {
         >
           <circle cx={389} cy={389} r={389} fill="#0d6efd" fillOpacity="0.19" />
         </svg>
-        <div className="container px-4 mx-auto">
+        <div className="container px-12 mx-auto">
           <div className="grid xl:grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-4">
-              <h2 className="text-4xl md:text-[40px] text-[#432010] font-bold leading-normal mb-4 p-4">
+              <h2 className="text-4xl md:text-[40px] text-[#432010] font-semibold leading-normal mb-4 p-4">
                 Your Safety, Our Commitment
               </h2>
-              <p className="text-[24px] leading-normal text-slate-700 p-4 bg-white/85 backdrop-blur-md rounded-md mb-4">
+              <p className="text-[18px] leading-normal text-slate-700 p-4 bg-white/85 backdrop-blur-md rounded-md mb-4">
                 These safety courses are more than training—they’re a promise. A
                 promise to protect you, so you can return home to your family
                 safely every day. Because here at Diamond Mine your safety is
                 our Priority.
               </p>
-              <h3 className="p-4 text-center md:text-xl xl:text-3xl rounded-full text-[#432010] font-bold shadow-lg shadow-lg border-double border-0.5 border-[#432010] border">
+              <h3 className="p-2 text-center md:text-xl xl:text-2xl bg-white/85 rounded-full text-[#432010] font-semibold shadow-lg border-double border-0.5 border-[#432010] border">
                 Get your safety training
               </h3>
             </div>
-            <div className="col-span-12 md:col-span-8">
+            <div className="col-span-12 md:col-span-8 mt-16">
               <div className="grid lg:grid-cols-2 gap-6 gap-x-5">
                 <div className="col-span-2 md:col-span-1">
                   <div>
-                    <div className="shadow-lg border-double border-1 border-[#432010] border h-full p-3">
-                      <div className="p-4 lg:p-8">
+                    <div className="shadow-lg border-double border border-[#432010] p-1">
+                      <div className="p-2 lg:p-2">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-cannabis" />
                         </div>
-                        <h5 className="text-xl font-medium my-4">
+                        <h5 className="text-lg font-medium">
                           Mine Emergency Preparedness and Response
                         </h5>
-                        <p className="opacity-75 mt-3">
-                          Learn how to effectively respond to emergencies,
-                          including evacuations, first aid, and communication
-                          protocols in mining environments.
+                        <p className="text-md mt-1">
+                          Learn how to respond to emergencies, incl evacuations,
+                          first aid, & communication protocols in mining
+                          environments.
                         </p>
                       </div>
                     </div>
-                    <div className="shadow-lg border-double border-1 border-[#432010] border  h-full p-3 mt-4">
-                      <div className="p-4 lg:p-8">
+                    <div className="shadow-lg border-double  border-[#432010] border  h-full p-1 mt-4">
+                      <div className="p-2 lg:p-2">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-ribbon" />
                         </div>
-                        <h5 className="text-xl font-medium my-6">
+                        <h5 className="text-lg font-medium ">
                           Hazard Identification and Risk Assessment
                         </h5>
-                        <p className="opacity-75 mt-4">
+                        <p className="mt-3 text-md">
                           Equip yourself with the skills to identify potential
                           hazards and assess risks to ensure a safer mining
                           workplace.
@@ -97,29 +97,29 @@ function CourseHero() {
                 </div>
                 <div className="col-span-2  md:col-span-1">
                   <div className="md:mt-12">
-                    <div className="bg-white opacity-90 shadow-lg border-double border-1 border-[#432010] border h-full p-3 md:mt-4">
-                      <div className="p-4 lg:p-8">
+                    <div className="bg-white opacity-90 shadow-lg border-double border border-[#432010] p-1 md:mt-4">
+                      <div className="p-2 lg:p-2">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fas fa-camera" />
                         </div>
-                        <h5 className="text-xl font-medium my-6">
+                        <h5 className="text-lg font-medium">
                           Workplace Safety for Underground Mining
                         </h5>
-                        <p className="opacity-75 mt-4">
+                        <p className="text-md mt-4">
                           Understand the unique safety challenges of underground
                           mining and learn best practices for mitigating risks.
                         </p>
                       </div>
                     </div>
-                    <div className="bg-white shadow-lg border-double border-1 border-[#432010] border h-full p-3 mt-4">
-                      <div className="p-4 lg:p-8">
+                    <div className="bg-white shadow-lg border-double border border-[#432010]  h-full p-1 mt-4">
+                      <div className="p-2 lg:p-2">
                         <div className="text-[40px] text-blue-600 mb-2">
                           <i className="fab fa-asymmetrik" />
                         </div>
-                        <h5 className="text-xl font-medium my-6">
+                        <h5 className="text-lg font-medium">
                           Equipment Operation and Maintenance Safety
                         </h5>
-                        <p className="opacity-75 mt-4">
+                        <p className="text-md mt-4">
                           Gain knowledge on safely operating and maintaining
                           mining equipment to prevent accidents and equipment
                           failures.

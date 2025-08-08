@@ -18,6 +18,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import IncidentReporting from "./components/DashboardComponents/IncidentReporting";
 import QuizPlayer from "./components/DashboardComponents/quiz/QuizPlayer";
 import Reset from "./components/Registration/Reset";
+import AdminRoute from "./components/AdminRoute";
 
 function App() {
   return (
@@ -30,17 +31,21 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/reset-password" element={<Reset />} />
           <Route path="/contact" element={<Contact />} />
-          
-          <Route element={<PrivateRoute />}>
-          <Route path="/completions" element={<Completions />} />
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/incident-reporting" element={<IncidentReporting />} />
-          <Route path="/certs" element={<Certificates />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/lessons/courses/:courseId/" element={<Lessons />} />
-          <Route path="/loadlesson" element={<LessonFormSubmit />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/quiz/course/:courseId" element={<QuizPlayer />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/completions" element={<Completions />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/incident-reporting" element={<IncidentReporting />} />
+            <Route path="/certs" element={<Certificates />} />
+            <Route path="/lessons/courses/:courseId/" element={<Lessons />} />
+            <Route path="/quiz/course/:courseId" element={<QuizPlayer />} />
+
+            {/* Admin Routes */}
+            <Route element={<AdminRoute />}>
+              <Route path="/loadlesson" element={<LessonFormSubmit />} />
+              {/* <Route path="/admin" element={<Admin />} /> */}
+            </Route>
           </Route>
         </Routes>
         <Footer />

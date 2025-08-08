@@ -1,54 +1,132 @@
+import { motion } from "framer-motion";
 import { safetyhelmets } from "../assets";
 
 const currentYear = new Date().getFullYear();
 
 function Footer() {
+  const footerLinks = {
+    Company: ["About", "Careers", "Press", "News"],
+    Legal: ["Privacy Policy", "Terms of Service", "Licensing", "Cookie Policy"],
+    Support: ["Contact", "Help Center", "Safety Center", "Community"],
+    Resources: ["Blog", "Certifications", "Partners", "Training Materials"],
+  };
+
   return (
-    <footer className="w-full bg-gray-100 bottom-0 rounded-lg shadow m-4 z-50">
-      <div className="w-full  mx-auto md:py-8">
-        <div className="sm:flex px-20 sm:items-center sm:justify-between">
-          <a
-            href="https://skillbase.ca/"
-            className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+    <motion.footer
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full bg-gradient-to-b from-gray-50 to-gray-100 bottom-0 rounded-lg shadow-lg z-50"
+    >
+      <div className="w-full max-w-7xl mx-auto py-1 sm:px-6 lg:px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 px-4 sm:px-6 lg:px-8">
+          {/* Logo and Company Name */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-1"
           >
-            <img src={safetyhelmets} className="h-16" alt="Flowbite Logo" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-[#432010]">
-              Skillbase
-            </span>
-          </a>
-          <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                About
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                Licensing
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Contact
-              </a>
-            </li>
-          </ul>
+            <a
+              href="https://skillbase.ca/"
+              className="flex items-center space-x-3 rtl:space-x-reverse"
+            >
+              <motion.img
+                whileHover={{ scale: 1.05 }}
+                src={safetyhelmets}
+                className="h-16"
+                alt="Skillbase Logo"
+              />
+              <span className="self-center text-2xl font-semibold whitespace-nowrap bg-gradient-to-r from-[#432010] to-yellow-700 bg-clip-text text-transparent">
+                Skillbase
+              </span>
+            </a>
+            <p className="mt-4 text-sm text-gray-600">
+              Empowering workplaces through comprehensive safety and compliance
+              training.
+            </p>
+          </motion.div>
+
+          {/* Footer Links Sections */}
+          {Object.entries(footerLinks).map(([category, links], index) => (
+            <motion.div
+              key={category}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 * (index + 1) }}
+              className="lg:col-span-1"
+            >
+              <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
+                {category}
+              </h3>
+              <ul className="mt-4 space-y-2">
+                {links.map((link) => (
+                  <motion.li
+                    key={link}
+                    whileHover={{ x: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <a
+                      href="#"
+                      className="text-sm text-gray-600 hover:text-[#432010] transition-colors duration-200"
+                    >
+                      {link}
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8 " />
-        <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
-          © {currentYear}{" "}
-          <a href="https://www.rufarodev.com/" className="hover:underline">
-            Rufaro Mucheri
-          </a>
-          . All Rights Reserved. Skillbase™
-        </span>
+
+        <motion.hr
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ delay: 0.5 }}
+          className="my-8 border-gray-200"
+        />
+
+        {/* Bottom Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center space-y-0 md:space-y-0">
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-sm text-gray-500"
+          >
+            © {currentYear}{" "}
+            <a
+              href="https://www.rufarodev.com/"
+              className="hover:text-[#432010] transition-colors duration-200"
+            >
+              Rufaro Mucheri
+            </a>
+            . All Rights Reserved. Skillbase™
+          </motion.span>
+
+          {/* Social Media Links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="flex space-x-6"
+          >
+            {["Twitter", "LinkedIn", "GitHub", "Instagram"].map((social) => (
+              <motion.a
+                key={social}
+                whileHover={{ y: -2 }}
+                href="#"
+                className="text-gray-400 hover:text-[#432010] transition-colors duration-200"
+              >
+                <span className="sr-only">{social}</span>
+                {/* You can add social media icons here */}
+                <span className="text-sm">{social}</span>
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
 

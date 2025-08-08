@@ -1,10 +1,12 @@
 import DashMainSection from "../components/DashboardComponents/DashMainSection";
 import SideBar from "../components/SideBar";
+import SubHeader from "../components/SubHeader";
 
 export default function Dashboard() {
   return (
     <div>
       <>
+        <SubHeader />
         <button
           data-drawer-target="default-sidebar"
           data-drawer-toggle="default-sidebar"

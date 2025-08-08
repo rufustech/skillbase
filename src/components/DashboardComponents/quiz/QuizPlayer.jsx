@@ -132,9 +132,11 @@ function QuizPlayer() {
               <p className="text-green-600 font-medium mb-4">
                 🎉 Congratulations! <span className="capitalize">{username}</span>  You passed.
               </p>
-              <button className="mt-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+              <button className="mt-4 mb-4 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">
                 Download Certificate
               </button>
+              <br/>
+              <a className="mt-4   text-blue-600 rounded hover:scale-105" href="/dashboard">Back to Dashboard</a>
             </>
           ) : (
             <>
@@ -147,6 +149,9 @@ function QuizPlayer() {
               >
                 Retry Quiz
               </button>
+
+
+
             </>
           )}
         </div>
