@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SideBar from "../SideBar";
 import { urls } from "../constants";
+import DOMPurify from "dompurify";
 import { courseCreate, engwomanCreateCourse } from "../../assets";
 import { Editor } from "@tinymce/tinymce-react"; // Import Editor from TinyMCE
 
@@ -40,23 +41,30 @@ function Admin() {
 
   const validateCourseForm = () => {
     const validationErrors = {};
-    if (!courseName.trim()) validationErrors.courseName = "Course name is required.";
-    if (!courseDescription.trim()) validationErrors.courseDescription = "Course description is required.";
+    if (!courseName.trim())
+      validationErrors.courseName = "Course name is required.";
+    if (!courseDescription.trim())
+      validationErrors.courseDescription = "Course description is required.";
     return validationErrors;
   };
 
   const validateLessonForm = () => {
     const validationErrors = {};
-    if (!lessonTitle.trim()) validationErrors.lessonTitle = "Lesson title is required.";
-    if (!lessonContent.trim()) validationErrors.lessonContent = "Lesson content is required.";
-    if (!selectedCourseId.trim()) validationErrors.selectedCourseId = "Please select a course.";
+    if (!lessonTitle.trim())
+      validationErrors.lessonTitle = "Lesson title is required.";
+    if (!lessonContent.trim())
+      validationErrors.lessonContent = "Lesson content is required.";
+    if (!selectedCourseId.trim())
+      validationErrors.selectedCourseId = "Please select a course.";
     return validationErrors;
   };
 
   const validateQuizForm = () => {
     const validationErrors = {};
-    if (!quizTitle.trim()) validationErrors.quizTitle = "Quiz title is required.";
-    if (questions.length === 0) validationErrors.questions = "Please add at least one question.";
+    if (!quizTitle.trim())
+      validationErrors.quizTitle = "Quiz title is required.";
+    if (questions.length === 0)
+      validationErrors.questions = "Please add at least one question.";
     return validationErrors;
   };
 
@@ -73,7 +81,10 @@ function Admin() {
       const response = await fetch(`${urls.url}/api/courses`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: courseName, description: courseDescription }),
+        body: JSON.stringify({
+          title: courseName,
+          description: courseDescription,
+        }),
       });
 
       if (!response.ok) throw new Error("Failed to create course.");
@@ -101,14 +112,61 @@ function Admin() {
 
     setIsSubmitting(true);
     try {
+      // Sanitize the content before sending to server
+      const sanitizedContent = DOMPurify.sanitize(lessonContent, {
+        ALLOWED_TAGS: [
+          "p",
+          "br",
+          "div",
+          "span",
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "h6",
+          "ul",
+          "ol",
+          "li",
+          "strong",
+          "em",
+          "b",
+          "i",
+          "a",
+          "img",
+          "table",
+          "tr",
+          "td",
+          "th",
+          "tbody",
+          "thead",
+          "blockquote",
+          "pre",
+          "code",
+        ],
+        ALLOWED_ATTR: [
+          "href",
+          "src",
+          "alt",
+          "class",
+          "target",
+          "style",
+          "id",
+          "width",
+          "height",
+        ],
+      });
+
       const response = await fetch(
         `${urls.url}/api/lessons/courses/${selectedCourseId}`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             title: lessonTitle,
-            content: lessonContent,
+            content: sanitizedContent, // Send sanitized content
             image: imageURL,
           }),
         }
@@ -186,7 +244,10 @@ function Admin() {
   };
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, { question: "", options: ["", "", "", ""], correctAnswer: "" }]);
+    setQuestions([
+      ...questions,
+      { question: "", options: ["", "", "", ""], correctAnswer: "" },
+    ]);
   };
 
   const handleRemoveQuestion = (index) => {
@@ -216,14 +277,15 @@ function Admin() {
           questions: questions,
           course: selectedCourseId,
         }),
-        
       });
 
       if (!response.ok) throw new Error("Failed to create quiz.");
 
       alert("Quiz created successfully!");
       setQuizTitle("");
-      setQuestions([{ question: "", options: ["", "", "", ""], correctAnswer: "" }]);
+      setQuestions([
+        { question: "", options: ["", "", "", ""], correctAnswer: "" },
+      ]);
       setSelectedCourseId("");
       setErrors({});
     } catch (error) {
@@ -235,180 +297,299 @@ function Admin() {
   };
 
   return (
-    <div className="p-4 sm:ml-64">
+    <div className="bg-gray-50 min-h-screen">
       <SideBar />
-      <section className="py-4 mx-auto container">
-        <h3 className="text-3xl text-[#432010] font-semibold mb-16">Manage Courses and Lessons</h3>
-        
-        {/* Create Course Form */}
-        <div className="grid md:grid-cols-2">
-          <div className="p-4 mb-8">
-            <img className="rounded-lg" src={courseCreate} alt="" />
-          </div>
-          <div className="lg:px-24">
-            <form onSubmit={handleCreateCourse} className="mt-0 ">
-              <label className="text-xl" htmlFor="courseName">Course Name:</label>
-              <input
-                id="courseName"
-                className="block w-full h-14 p-2 mt-2 border rounded-lg"
-                value={courseName}
-                onChange={(e) => setCourseName(e.target.value)}
-                placeholder="Enter course name"
-              />
-              {errors.courseName && <p className="text-red-600">{errors.courseName}</p>}
+      <div className="p-4 sm:ml-64">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-semibold text-[#432010] mb-8">
+            Manage Courses and Lessons
+          </h1>
 
-              <label htmlFor="courseDescription" className="mt-4 text-xl">Course Description:</label>
-              <Editor
-                apiKey="rdv7ujfih6cx5hcufff5nek3ou95gq2ghxncjnyiq3njan9l"  // Use your API key here
-                value={courseDescription}
-                onEditorChange={(newValue) => setCourseDescription(newValue)}
-                init={{
-                  height: 400,
-                  menubar: false,
-                  plugins: ['advlist autolink lists link image charmap print preview anchor'],
-                  toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-                }}
-              />
-              {errors.courseDescription && <p className="text-red-600">{errors.courseDescription}</p>}
-
-              <button
-                type="submit"
-                className="mt-5 px-12 font-semibold py-3 bg-[#432010] text-white rounded-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Creating..." : "Create Course"}
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Create Lesson Form */}
-        <div className="grid md:grid-cols-2 mb-8 mt-16">
-          <div className="lg:px-12">
-            <form onSubmit={handleCreateLesson} className="mt-2">
-              <label htmlFor="selectedCourse" className="mt-4">Select Course</label>
-              <select
-                id="selectedCourse"
-                className="block w-full h-14 p-2 mt-2 border rounded-lg"
-                value={selectedCourseId}
-                onChange={(e) => setSelectedCourseId(e.target.value)}
-              >
-                <option value="">Select a course</option>
-                {courses.map((course) => (
-                  <option key={course._id} value={course._id}>{course.title}</option>
-                ))}
-              </select>
-              {errors.selectedCourseId && <p className="text-red-600">{errors.selectedCourseId}</p>}
-
-              <label htmlFor="lessonTitle" className="mt-4">Lesson Title</label>
-              <input
-                id="lessonTitle"
-                className="block w-full h-14 p-2 mt-2 border rounded-lg"
-                value={lessonTitle}
-                onChange={(e) => setLessonTitle(e.target.value)}
-                placeholder="Enter lesson title"
-              />
-              {errors.lessonTitle && <p className="text-red-600">{errors.lessonTitle}</p>}
-
-              <label htmlFor="lessonContent" className="mt-4">Lesson Content</label>
-              <Editor
-                apiKey="rdv7ujfih6cx5hcufff5nek3ou95gq2ghxncjnyiq3njan9l"  // Use your API key here
-                value={lessonContent}
-                onEditorChange={(newValue) => setLessonContent(newValue)}
-                init={{
-                  height: 400,
-                  menubar: false,
-                  plugins: ['advlist autolink lists link image charmap print preview anchor'],
-                  toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-                }}
-              />
-              {errors.lessonContent && <p className="text-red-600">{errors.lessonContent}</p>}
-
-              <label htmlFor="imageURL" className="mt-4">Image URL</label>
-              <input
-                id="imageURL"
-                className="block w-full h-14 p-2 mt-2 border rounded-lg"
-                value={imageURL}
-                onChange={(e) => setImageURL(e.target.value)}
-                placeholder="Enter image URL"
-              />
-
-              <button
-                type="submit"
-                className="mt-5 px-12 font-semibold py-3 bg-[#432010] text-white rounded-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Creating..." : "Create Lesson"}
-              </button>
-            </form>
-          </div>
-          <div className="p-4 mb-16">
-            <img className="rounded-lg" src={engwomanCreateCourse} alt="" />
-          </div>
-        </div>
-
-        {/* Quiz Creation Section */}
-        <div className="grid md:grid-cols-2 mt-2">
-          <div className="lg:px-12">
-            <form onSubmit={handleCreateQuiz} className="mt-4">
-              <label htmlFor="quizTitle" className="mt-4 text-2xl font-bold">Quiz Title</label>
-              <input
-                id="quizTitle"
-                className="block w-full h-14 p-2 mt-2 border rounded-lg"
-                value={quizTitle}
-                onChange={(e) => setQuizTitle(e.target.value)}
-                placeholder="Enter quiz title"
-              />
-              {errors.quizTitle && <p className="text-red-600">{errors.quizTitle}</p>}
-
-              <label htmlFor="selectedCourse" className="mt-4">Select Course</label>
-              <select
-                id="selectedCourse"
-                className="block w-full h-14 p-2 mt-2 border rounded-lg"
-                value={selectedCourseId}
-                onChange={(e) => setSelectedCourseId(e.target.value)}
-              >
-                <option value="">Select a course</option>
-                {courses.map((course) => (
-                  <option key={course._id} value={course._id}>{course.title}</option>
-                ))}
-              </select>
-              {errors.selectedCourseId && <p className="text-red-600">{errors.selectedCourseId}</p>}
-
-              {/* Render Questions */}
-              {questions.map((question, index) => (
-                <div key={index} className="mt-8">
-                  <label htmlFor={`question${index}`} className="mt-4">Question {index + 1}</label>
+          {/* Course Management */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 className="text-xl text-[#432010] mb-6">Create New Course</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <img
+                  className="rounded-lg w-full h-auto"
+                  src={courseCreate}
+                  alt="Create Course"
+                />
+              </div>
+              <form onSubmit={handleCreateCourse} className="space-y-4">
+                <div>
+                  <label
+                    className="block text-md font-medium text-gray-700"
+                    htmlFor="courseName"
+                  >
+                    Course Name
+                  </label>
                   <input
-                    id={`question${index}`}
-                    name="question"
-                    className="block w-full h-14 p-2 mt-2 border rounded-lg"
+                    id="courseName"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    value={courseName}
+                    onChange={(e) => setCourseName(e.target.value)}
+                    placeholder="Enter course name"
+                  />
+                  {errors.courseName && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.courseName}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label
+                    className="block text-md font-medium text-gray-700"
+                    htmlFor="courseDescription"
+                  >
+                    Course Description
+                  </label>
+                  <Editor
+                    apiKey="rdv7ujfih6cx5hcufff5nek3ou95gq2ghxncjnyiq3njan9l"
+                    value={courseDescription}
+                    onEditorChange={(newValue) =>
+                      setCourseDescription(newValue)
+                    }
+                    init={{
+                      height: 300,
+                      menubar: false,
+                      plugins: [
+                        "advlist autolink lists link image charmap print preview anchor",
+                      ],
+                      toolbar:
+                        "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+                    }}
+                  />
+                  {errors.courseDescription && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.courseDescription}
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-[#432010] text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition duration-300"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Creating..." : "Create Course"}
+                </button>
+              </form>
+            </div>
+          </div>
+
+          {/* Lesson Management */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 className="text-2xl font-semibold text-[#432010] mb-6">
+              Create New Lesson
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <form onSubmit={handleCreateLesson} className="space-y-4">
+                <div>
+                  <label
+                    className="block text-sm font-medium text-gray-700"
+                    htmlFor="selectedCourse"
+                  >
+                    Select Course
+                  </label>
+                  <select
+                    id="selectedCourse"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    value={selectedCourseId}
+                    onChange={(e) => setSelectedCourseId(e.target.value)}
+                  >
+                    <option value="">Select a course</option>
+                    {courses.map((course) => (
+                      <option key={course._id} value={course._id}>
+                        {course.title}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.selectedCourseId && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.selectedCourseId}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label
+                    className="block text-sm font-medium text-gray-700"
+                    htmlFor="lessonTitle"
+                  >
+                    Lesson Title
+                  </label>
+                  <input
+                    id="lessonTitle"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    value={lessonTitle}
+                    onChange={(e) => setLessonTitle(e.target.value)}
+                    placeholder="Enter lesson title"
+                  />
+                  {errors.lessonTitle && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.lessonTitle}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label
+                    className="block text-sm font-medium text-gray-700"
+                    htmlFor="lessonContent"
+                  >
+                    Lesson Content
+                  </label>
+                  <Editor
+                    apiKey="rdv7ujfih6cx5hcufff5nek3ou95gq2ghxncjnyiq3njan9l"
+                    value={lessonContent}
+                    onEditorChange={(newValue) => setLessonContent(newValue)}
+                    init={{
+                      height: 300,
+                      menubar: true,
+                      plugins: [
+                        "advlist autolink lists link image charmap print preview anchor",
+                        "searchreplace visualblocks code fullscreen",
+                        "insertdatetime media table paste code help wordcount",
+                      ],
+                      toolbar: `
+      undo redo | formatselect | bold italic backcolor | 
+      alignleft aligncenter alignright alignjustify | 
+      bullist numlist outdent indent | removeformat | 
+      table image link | help
+    `,
+                      content_style: `
+      body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; }
+      p { margin: 0; padding: 0.5em 0; }
+    `,
+                      formats: {
+                        h1: { block: "h1", classes: "text-3xl font-bold" },
+                        h2: { block: "h2", classes: "text-2xl font-bold" },
+                        h3: { block: "h3", classes: "text-xl font-bold" },
+                      },
+                      setup: function (editor) {
+                        editor.on("init", function () {
+                          editor.getBody().style.fontSize = "16px";
+                        });
+                      },
+                    }}
+                  />
+
+                  {errors.lessonContent && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.lessonContent}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label
+                    className="block text-sm font-medium text-gray-700"
+                    htmlFor="imageURL"
+                  >
+                    Image URL
+                  </label>
+                  <input
+                    id="imageURL"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                    value={imageURL}
+                    onChange={(e) => setImageURL(e.target.value)}
+                    placeholder="Enter image URL"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-[#432010] text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition duration-300"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Creating..." : "Create Lesson"}
+                </button>
+              </form>
+              <div>
+                <img
+                  className="rounded-lg w-full h-auto"
+                  src={engwomanCreateCourse}
+                  alt="Create Lesson"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Quiz Management */}
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 className="text-2xl font-semibold text-[#432010] mb-6">
+              Create Quiz
+            </h2>
+            <form onSubmit={handleCreateQuiz} className="space-y-6">
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-700"
+                  htmlFor="quizTitle"
+                >
+                  Quiz Title
+                </label>
+                <input
+                  id="quizTitle"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  value={quizTitle}
+                  onChange={(e) => setQuizTitle(e.target.value)}
+                  placeholder="Enter quiz title"
+                />
+                {errors.quizTitle && (
+                  <p className="text-red-600 text-sm mt-1">
+                    {errors.quizTitle}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label
+                  className="block text-sm font-medium text-gray-700"
+                  htmlFor="quizCourse"
+                >
+                  Select Course
+                </label>
+                <select
+                  id="quizCourse"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  value={selectedCourseId}
+                  onChange={(e) => setSelectedCourseId(e.target.value)}
+                >
+                  <option value="">Select a course</option>
+                  {courses.map((course) => (
+                    <option key={course._id} value={course._id}>
+                      {course.title}
+                    </option>
+                  ))}
+                </select>
+                {errors.selectedCourseId && (
+                  <p className="text-red-600 text-sm mt-1">
+                    {errors.selectedCourseId}
+                  </p>
+                )}
+              </div>
+              {questions.map((question, index) => (
+                <div
+                  key={index}
+                  className="border border-gray-200 rounded-md p-4 space-y-4"
+                >
+                  <h3 className="font-medium">Question {index + 1}</h3>
+                  <input
+                    className="w-full border border-gray-300 rounded-md shadow-sm p-2"
                     value={question.question}
                     onChange={(e) => handleQuestionChange(index, e)}
                     placeholder={`Enter question ${index + 1}`}
                   />
-
-                  <label className="mt-4">Options</label>
                   {question.options.map((option, optionIndex) => (
-                    <div key={optionIndex} className="flex items-center">
-                      <input
-                        type="text"
-                        name={`option-${optionIndex}`}
-                        className="block w-full h-14 p-2 mt-2 border rounded-lg"
-                        value={option}
-                        onChange={(e) => handleOptionChange(index, optionIndex, e)}
-                        placeholder={`Option ${optionIndex + 1}`}
-                      />
-                    </div>
+                    <input
+                      key={optionIndex}
+                      className="w-full border border-gray-300 rounded-md shadow-sm p-2"
+                      value={option}
+                      onChange={(e) =>
+                        handleOptionChange(index, optionIndex, e)
+                      }
+                      placeholder={`Option ${optionIndex + 1}`}
+                    />
                   ))}
-
-                  <label htmlFor={`correctAnswer${index}`} className="mt-4">Correct Answer</label>
                   <select
-                    id={`correctAnswer${index}`}
-                    name="correctAnswer"
+                    className="w-full border border-gray-300 rounded-md shadow-sm p-2"
                     value={question.correctAnswer}
                     onChange={(e) => handleCorrectAnswerChange(index, e)}
-                    className="block w-full h-14 p-2 mt-2 border rounded-lg"
                   >
                     <option value="">Select the correct answer</option>
                     {question.options.map((option, optionIndex) => (
@@ -417,73 +598,70 @@ function Admin() {
                       </option>
                     ))}
                   </select>
-
                   <button
                     type="button"
                     onClick={() => handleRemoveQuestion(index)}
-                    className="mt-4 px-4 py-2 bg-red-600 text-white rounded-full"
+                    className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 transition duration-300"
                   >
                     Remove Question
                   </button>
                 </div>
               ))}
-
               <button
                 type="button"
                 onClick={handleAddQuestion}
-                className="mt-5 px-12 py-3 bg-[#432010] text-white rounded-full"
+                className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300"
               >
                 Add New Question
               </button>
-
               <button
                 type="submit"
-                className="mt-5 px-12 font-semibold py-3 bg-[#432010] text-white rounded-full"
+                className="w-full bg-[#432010] text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition duration-300"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Creating..." : "Create Quiz"}
               </button>
             </form>
           </div>
-          <div className="p-4 mb-16">
-            <img className="rounded-lg" src={engwomanCreateCourse} alt="" />
-          </div>
-        </div>
-      </section>
 
-      <section className="py-4 mx-auto container">
-        <div className="grid md:grid-cols-2">
-          <div className="">
-            <label htmlFor="selectedCourse">Select Course</label>
-            <select
-              id="selectedCourse"
-              className="block w-full h-14 p-2 mt-2 border rounded-lg"
-              value={selectedCourseId}
-              onChange={(e) => setSelectedCourseId(e.target.value)}
-            >
-              <option value="">Select a course</option>
-              {courses.map((course) => (
-                <option key={course._id} value={course._id}>
-                  {course.title}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              className="mt-4 px-4 py-2 bg-red-600 text-white rounded-full"
-              onClick={handleDeleteCourse}
-            >
-              Delete Selected Course
-            </button>
-          </div>
-          <div className="lg:w-1/2 pl-12">
-            <img
-              src="https://www.randomnoun.com/wpf/shell32-avi/tshell32_162.gif"
-              alt=""
-            />
+          {/* Course Deletion */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-semibold text-[#432010] mb-6">
+              Delete Course
+            </h2>
+            <div className="flex items-end space-x-4">
+              <div className="flex-grow">
+                <label
+                  className="block text-sm font-medium text-gray-700"
+                  htmlFor="deleteCourse"
+                >
+                  Select Course to Delete
+                </label>
+                <select
+                  id="deleteCourse"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                  value={selectedCourseId}
+                  onChange={(e) => setSelectedCourseId(e.target.value)}
+                >
+                  <option value="">Select a course</option>
+                  {courses.map((course) => (
+                    <option key={course._id} value={course._id}>
+                      {course.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                type="button"
+                onClick={handleDeleteCourse}
+                className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-300"
+              >
+                Delete Selected Course
+              </button>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

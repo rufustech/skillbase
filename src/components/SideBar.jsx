@@ -12,16 +12,37 @@ import {
   faUnlockKeyhole,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { urls } from "./constants";
 
 function SideBar() {
   const [username, setUsername] = useState("");
   const { user, isAdmin } = useUser();
+  const [courses, setCourses] = useState([]);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch(`${urls.url}/api/courses`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch courses");
+      }
+      const data = await response.json();
+      console.log("Courses fetched:", data);
+      if (data.success && Array.isArray(data.data)) {
+        setCourses(data.data);
+      } else {
+        console.error("Invalid data format received from server");
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
 
   useEffect(() => {
     const storedName = localStorage.getItem("username");
     if (storedName) {
       setUsername(storedName);
     }
+    fetchCourses();
   }, []);
 
   // Common CSS classes for links
@@ -34,7 +55,7 @@ function SideBar() {
       icon: faUser,
       text: (
         <>
-          <span className="capitalize">{username}</span>
+          <span className="capitalize">{username}'s Dashboard</span>
         </>
       ),
     },
@@ -47,7 +68,7 @@ function SideBar() {
       path: "/courses",
       icon: faPersonChalkboard,
       text: "Courses",
-      badge: "3",
+      badge: courses.length,
     },
     {
       path: "/safety-stats",
@@ -96,7 +117,7 @@ function SideBar() {
                   {item.text}
                 </span>
                 {item.badge && (
-                  <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
+                  <span className="inline-flex items-center justify-center w-3 h-3 p-3.5 ms-3 text-sm font-medium text-blue-800 shadow rounded-full dark:bg-blue-900 dark:text-blue-300">
                     {item.badge}
                   </span>
                 )}
