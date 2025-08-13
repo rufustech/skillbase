@@ -1,7 +1,19 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { womanengineerfrnt } from "../../assets";
 import { useNavigate, Link } from "react-router-dom";
+import {
+  FaGraduationCap,
+  FaCertificate,
+  FaBookOpen,
+  FaClipboardList,
+  FaUserCheck,
+  FaUserPlus,
+  FaChartBar,
+  FaExclamationTriangle,
+  FaUsers,
+  FaDatabase,
+  FaBalanceScale,
+} from "react-icons/fa";
 
 function DashMainSection() {
   const navigate = useNavigate();
@@ -22,72 +34,141 @@ function DashMainSection() {
     }
   }, [navigate]);
 
+  const dashboardItems = [
+    {
+      title: "Online Training",
+      icon: <FaGraduationCap className="text-4xl" />,
+      link: "/courses",
+      color: "from-blue-500 to-blue-600",
+      description: "Access your training modules",
+    },
+    {
+      title: "Certificates",
+      icon: <FaCertificate className="text-4xl" />,
+      link: "/certs",
+      color: "from-green-500 to-green-600",
+      description: "View your certifications",
+    },
+    {
+      title: "Policies",
+      icon: <FaBookOpen className="text-4xl" />,
+      link: "/policies",
+      color: "from-purple-500 to-purple-600",
+      description: "Company policies and guidelines",
+    },
+    {
+      title: "Procedures",
+      icon: <FaClipboardList className="text-4xl" />,
+      link: "/procedures",
+      color: "from-yellow-500 to-yellow-600",
+      description: "Standard operating procedures",
+    },
+    {
+      title: "Competencies",
+      icon: <FaUserCheck className="text-4xl" />,
+      link: "/competencies",
+      color: "from-red-500 to-red-600",
+      description: "Skill assessments and tracking",
+    },
+    {
+      title: "Orientations",
+      icon: <FaUserPlus className="text-4xl" />,
+      link: "/orientations",
+      color: "from-indigo-500 to-indigo-600",
+      description: "New employee onboarding",
+    },
+    {
+      title: "Safety Stats",
+      icon: <FaChartBar className="text-4xl" />,
+      link: "/safety-stats",
+      color: "from-teal-500 to-teal-600",
+      description: "Safety performance metrics",
+    },
+    {
+      title: "Incident Reporting",
+      icon: <FaExclamationTriangle className="text-4xl" />,
+      link: "/incident-reporting",
+      color: "from-orange-500 to-orange-600",
+      description: "Report safety incidents",
+    },
+    {
+      title: "Safety Meetings",
+      icon: <FaUsers className="text-4xl" />,
+      link: "/safety-meetings",
+      color: "from-pink-500 to-pink-600",
+      description: "Meeting schedules and minutes",
+    },
+    {
+      title: "SDS",
+      icon: <FaDatabase className="text-4xl" />,
+      link: "/sds",
+      color: "from-cyan-500 to-cyan-600",
+      description: "Safety Data Sheets",
+    },
+    {
+      title: "Legislation",
+      icon: <FaBalanceScale className="text-4xl" />,
+      link: "/legislation",
+      color: "from-gray-600 to-gray-700",
+      description: "Safety laws and regulations",
+    },
+  ];
+
   return (
-    <div className=" bg-gray-50">
-      <div className="p-2 sm:ml-64 container mx-auto">
-        <div className="px-12 shadow-lg rounded-lg">
-          <section className="relative w-full h-[calc(100vh-200px)] overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
-              {/* Left Content Section */}
-              <div className="flex flex-col justify-center px-4 lg:px-2">
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <h1 className="text-4xl lg:text-6xl text-[#432010] font-semibold uppercase mb-4">
-                    <span className="text-orange-800 italic block mb-2">
-                      {username}
-                    </span>
-                    Welcome to Skillbase
-                  </h1>
+    <div className="bg-gray-50 min-h-screen">
+      <div className="p-4 sm:ml-64">
+        <div className="max-w-7xl mx-auto">
+          {/* Welcome Section */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <h1 className="text-3xl font-bold text-gray-800">
+              Welcome back, {username}!
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Access your safety and training resources below
+            </p>
+          </motion.div>
 
-                  <p className="text-gray-700 text-lg lg:text-xl mb-8 max-w-lg">
-                    Skillbase your knowledge portal to keep you safe and have a
-                    healthy workspace
-                  </p>
-
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Link
-                      to="/courses"
-                      className="inline-block px-12 py-4 text-xl lg:text-2xl 
-                        bg-white text-[#432010] rounded-full font-bold 
-                        shadow-lg hover:bg-[#432010] hover:text-white 
-                        transition-all duration-300 ease-in-out"
-                    >
-                      Start Training
-                    </Link>
-                  </motion.div>
-                </motion.div>
-              </div>
-
-              {/* Right Image Section */}
+          {/* Dashboard Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {dashboardItems.map((item, index) => (
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                className="relative h-full"
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="absolute inset-0 flex items-start justify-center lg:justify-end">
-                  <img
-                    src={womanengineerfrnt}
-                    alt="Engineer"
-                    className=" h-full max-h-[95vh] w-full object-cover"
-                    style={{
-                      marginTop: "-5%", // Adjust this value to move image up/down
-                    }}
-                  />
-                </div>
+                <Link to={item.link}>
+                  <div
+                    className={`
+                    h-full p-6 rounded-xl shadow-lg
+                    bg-gradient-to-br ${item.color}
+                    transform transition-all duration-300
+                    hover:shadow-xl
+                    flex flex-col items-center justify-center
+                    text-white
+                  `}
+                  >
+                    <div className="mb-4">{item.icon}</div>
+                    <h3 className="text-xl font-semibold text-center mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-center opacity-90">
+                      {item.description}
+                    </p>
+                  </div>
+                </Link>
               </motion.div>
-            </div>
-          </section>
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
 export default DashMainSection;

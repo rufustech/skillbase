@@ -6,7 +6,6 @@ import Footer from "./components/Footer";
 import SignIn from "./pages/SignIn";
 import SubHeader from "./components/SubHeader";
 import Dashboard from "./pages/Dashboard";
-import Completions from "./components/DashboardComponents/Completions";
 import Courses from "./components/DashboardComponents/Courses";
 import Lessons from "./components/DashboardComponents/Lessons";
 import Certificates from "./components/DashboardComponents/Certificates";
@@ -15,10 +14,12 @@ import Admin from "./components/DashboardComponents/Admin";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PrivateRoute from "./components/PrivateRoute";
-import IncidentReporting from "./components/DashboardComponents/IncidentReporting";
+import IncidentReporting from "./components/IncidentReporting";
 import QuizPlayer from "./components/DashboardComponents/quiz/QuizPlayer";
 import Reset from "./components/Registration/Reset";
 import AdminRoute from "./components/AdminRoute";
+import Completions from "./components/DashboardComponents/Completions";
+import SafetyStats from "./components/SafetyStats";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/completions" element={<Completions />} />
+            <Route path="/safety-stats" element={<SafetyStats />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/incident-reporting" element={<IncidentReporting />} />
             <Route path="/certs" element={<Certificates />} />

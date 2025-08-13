@@ -28,20 +28,19 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/contact" element={<Contact />} />
-       
-       
+
           <Route path="/quiz/course/:courseId/" element={<QuizPlayer />} />
           <Route path="/courses" element={<Courses />} />
           <Route element={<PrivateRoute />}>
-          <Route path="/completions" element={<Completions />} />
-          
-          <Route path="/incident-reporting" element={<IncidentReporting />} />
-          <Route path="/certs" element={<Certificates />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/lessons/courses/:courseId/" element={<Lessons />} />
-          <Route path="/loadlesson" element={<LessonFormSubmit />} />
-          <Route path="/admin" element={<Admin />} />
-          {/* <Route path="/quiz/course/:courseId/" element={<QuizPlayer />} /> */}
+            <Route path="/completions" element={<Completions />} />
+
+            <Route path="/incident-reporting" element={<IncidentReporting />} />
+            <Route path="/certs" element={<Certificates />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/lessons/courses/:courseId/" element={<Lessons />} />
+            <Route path="/loadlesson" element={<LessonFormSubmit />} />
+            <Route path="/admin" element={<Admin />} />
+            {/* <Route path="/quiz/course/:courseId/" element={<QuizPlayer />} /> */}
           </Route>
         </Routes>
         <Footer />

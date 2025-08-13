@@ -51,7 +51,7 @@ function SideBar() {
 
   const menuItems = [
     {
-      path: "",
+      path: "/dashboard",
       icon: faUser,
       text: (
         <>
@@ -60,7 +60,7 @@ function SideBar() {
       ),
     },
     {
-      path: "/completions",
+      path: "/certs",
       icon: faCertificate,
       text: "Certificates",
     },
@@ -81,7 +81,7 @@ function SideBar() {
       text: "Incident Reporting",
     },
     {
-      path: "/certs",
+      path: "/completions",
       icon: faToolbox,
       text: "Completions",
     },

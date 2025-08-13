@@ -1,138 +1,113 @@
-function CourseHero() {
-  return (
-    <div className="p-4 sm:ml-64 mx-autos">
-      <section className="ezy__service20 light py-4 md:py-12  mx-auto text-zinc-900  relative z-[1] overflow-hidden">
-        {/* shape one */}
-        <svg
-          className="absolute -bottom-[20%] left-0 -z-[1]"
-          width={405}
-          height={626}
-          viewBox="0 0 405 626"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="-302.65"
-            y="296.986"
-            width="433.92"
-            height={140}
-            rx="73.8464"
-            transform="rotate(-33.796 -302.65 296.986)"
-            fill="#7434F8"
-            fillOpacity="0.5"
-          />
-          <rect
-            x={-315}
-            y="502.403"
-            width="666.584"
-            height={140}
-            rx="73.8464"
-            transform="rotate(-33.796 -315 502.403)"
-            fill="#FAA515"
-            fillOpacity="0.5"
-          />
-        </svg>
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { urls } from "../../constants";
+import { FaShieldAlt } from "react-icons/fa";
 
-        <svg
-          className="absolute -top-[20%] right-0 -z-[1]"
-          width={340}
-          height={658}
-          viewBox="0 0 495 778"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx={389} cy={389} r={389} fill="#0d6efd" fillOpacity="0.19" />
-        </svg>
-        <div className="container px-12 mx-auto">
-          <div className="grid xl:grid-cols-12 gap-6">
-            <div className="col-span-12 md:col-span-4">
-              <h2 className="text-4xl md:text-[40px] text-[#432010] font-semibold leading-normal mb-4 p-4">
-                Your Safety, Our Commitment
-              </h2>
-              <p className="text-[18px] leading-normal text-slate-700 p-4 bg-white/85 backdrop-blur-md rounded-md mb-4">
-                These safety courses are more than training—they’re a promise. A
-                promise to protect you, so you can return home to your family
-                safely every day. Because here at Diamond Mine your safety is
-                our Priority.
-              </p>
-              <h3 className="p-2 text-center md:text-xl xl:text-2xl bg-white/85 rounded-full text-[#432010] font-semibold shadow-lg border-double border-0.5 border-[#432010] border">
-                Get your safety training
+function CourseHero() {
+  const [featuredCourses, setFeaturedCourses] = useState([]);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  async function fetchCourses() {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${urls.url}/api/courses`);
+      if (!response.ok) throw new Error("Network response was not ok");
+      const data = await response.json();
+      setFeaturedCourses(data.data.slice(0, 4)); // Only take first 4 courses
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      setError("Failed to load featured courses");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="px-12 sm:ml-64 mx-auto min-h-[400px] flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-16 h-16 border-4 border-[#432010] border-t-transparent rounded-full"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 sm:ml-64">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid xl:grid-cols-12 gap-6">
+          {/* Left Column - Hero Text */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="col-span-12 xl:col-span-4"
+          >
+            <h2 className="text-4xl text-[#432010] font-bold mb-4">
+              Your Safety, Our Commitment
+            </h2>
+            <p className="text-lg text-gray-700 mb-6 bg-white/90 p-4 rounded-lg shadow-sm">
+              These safety courses are more than training—they're a promise. A
+              promise to protect you, so you can return home safely every day.
+            </p>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-block"
+            >
+              <h3
+                className="px-6 py-3 text-center text-xl rounded-full text-[#432010] 
+                           font-bold shadow-lg border-2 border-[#432010] cursor-pointer
+                           hover:bg-[#432010] hover:text-white transition-all duration-300"
+              >
+                Ongoing Safety Incidents
               </h3>
+            </motion.div>
+          </motion.div>
+
+          {/* Right Column - Featured Courses */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="col-span-12 xl:col-span-8"
+          >
+            <div className="grid md:grid-cols-2 gap-4">
+              <AnimatePresence>
+                {featuredCourses.map((course, index) => (
+                  <motion.div
+                    key={course._id || index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white rounded-lg shadow-md hover:shadow-lg 
+                             transition-all duration-300 border border-gray-100"
+                  >
+                    <div className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <FaShieldAlt className="text-[#432010] text-xl" />
+                        <h3 className="text-lg font-semibold text-[#432010]">
+                          {course.title || `Safety Course ${index + 1}`}
+                        </h3>
+                      </div>
+                      <p className="text-gray-600 text-sm">
+                        {course.description || "Course description loading..."}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
-            <div className="col-span-12 md:col-span-8 mt-16">
-              <div className="grid lg:grid-cols-2 gap-6 gap-x-5">
-                <div className="col-span-2 md:col-span-1">
-                  <div>
-                    <div className="shadow-lg border-double border border-[#432010] p-1">
-                      <div className="p-2 lg:p-2">
-                        <div className="text-[40px] text-blue-600 mb-2">
-                          <i className="fas fa-cannabis" />
-                        </div>
-                        <h5 className="text-lg font-medium">
-                          Mine Emergency Preparedness and Response
-                        </h5>
-                        <p className="text-md mt-1">
-                          Learn how to respond to emergencies, incl evacuations,
-                          first aid, & communication protocols in mining
-                          environments.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="shadow-lg border-double  border-[#432010] border  h-full p-1 mt-4">
-                      <div className="p-2 lg:p-2">
-                        <div className="text-[40px] text-blue-600 mb-2">
-                          <i className="fas fa-ribbon" />
-                        </div>
-                        <h5 className="text-lg font-medium ">
-                          Hazard Identification and Risk Assessment
-                        </h5>
-                        <p className="mt-3 text-md">
-                          Equip yourself with the skills to identify potential
-                          hazards and assess risks to ensure a safer mining
-                          workplace.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-span-2  md:col-span-1">
-                  <div className="md:mt-12">
-                    <div className="bg-white opacity-90 shadow-lg border-double border border-[#432010] p-1 md:mt-4">
-                      <div className="p-2 lg:p-2">
-                        <div className="text-[40px] text-blue-600 mb-2">
-                          <i className="fas fa-camera" />
-                        </div>
-                        <h5 className="text-lg font-medium">
-                          Workplace Safety for Underground Mining
-                        </h5>
-                        <p className="text-md mt-4">
-                          Understand the unique safety challenges of underground
-                          mining and learn best practices for mitigating risks.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="bg-white shadow-lg border-double border border-[#432010]  h-full p-1 mt-4">
-                      <div className="p-2 lg:p-2">
-                        <div className="text-[40px] text-blue-600 mb-2">
-                          <i className="fab fa-asymmetrik" />
-                        </div>
-                        <h5 className="text-lg font-medium">
-                          Equipment Operation and Maintenance Safety
-                        </h5>
-                        <p className="text-md mt-4">
-                          Gain knowledge on safely operating and maintaining
-                          mining equipment to prevent accidents and equipment
-                          failures.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
