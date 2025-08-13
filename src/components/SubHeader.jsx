@@ -8,41 +8,35 @@ function SubHeader() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Check login status whenever component mounts or localStorage changes
+  // login state
   useEffect(() => {
     const checkLoginStatus = () => {
       const token = localStorage.getItem("token");
       const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
-      setIsLoggedIn(token && loggedInStatus);
+      setIsLoggedIn(Boolean(token) && loggedInStatus);
     };
-
-    // Check initial status
     checkLoginStatus();
-
-    // Add event listener for storage changes
     window.addEventListener("storage", checkLoginStatus);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener("storage", checkLoginStatus);
-    };
+    return () => window.removeEventListener("storage", checkLoginStatus);
   }, []);
 
+  // close on Esc & lock scroll
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && setIsMenuOpen(false);
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
   const handleLogout = () => {
-    // Clear all auth-related items
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-
-    // Update state
+    ["auth_token", "user", "isLoggedIn", "token", "username"].forEach((k) =>
+      localStorage.removeItem(k)
+    );
     setIsLoggedIn(false);
-
-    // Close mobile menu if open
     setIsMenuOpen(false);
-
-    // Navigate to home
     navigate("/");
   };
 
@@ -53,6 +47,20 @@ function SubHeader() {
     { title: "Contact", path: "/contact" },
     { title: "News", path: "/news" },
   ];
+
+  // hamburger line variants
+  const topLine = {
+    closed: { rotate: 0, y: 0 },
+    open: { rotate: 45, y: 6 },
+  };
+  const midLine = {
+    closed: { opacity: 1 },
+    open: { opacity: 0 },
+  };
+  const botLine = {
+    closed: { rotate: 0, y: 0 },
+    open: { rotate: -45, y: -6 },
+  };
 
   return (
     <motion.nav
@@ -87,7 +95,7 @@ function SubHeader() {
       </motion.div>
 
       {/* Desktop Menu */}
-      <motion.ul className="hidden font-semibold text-[#432010] lg:absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 lg:flex flex-row items-center justify-center gap-5">
+      <motion.ul className="hidden font-semibold text-[#432010] lg:absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:flex flex-row items-center justify-center gap-5">
         {navItems.map((item, index) => (
           <motion.li
             key={item.title}
@@ -147,75 +155,121 @@ function SubHeader() {
         </AnimatePresence>
       </motion.div>
 
-      {/* Hamburger Icon - remains the same */}
+      {/* HAMBURGER (mobile only) */}
+      <button
+        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        className="lg:hidden p-2 rounded-md hover:bg-white/70 transition relative"
+        onClick={() => setIsMenuOpen((v) => !v)}
+      >
+        <div className="w-7 h-6 relative">
+          <motion.span
+            variants={topLine}
+            animate={isMenuOpen ? "open" : "closed"}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            className="absolute left-0 top-0 block h-[3px] w-full bg-[#432010] rounded"
+          />
+          <motion.span
+            variants={midLine}
+            animate={isMenuOpen ? "open" : "closed"}
+            transition={{ duration: 0.2 }}
+            className="absolute left-0 top-1/2 -translate-y-1/2 block h-[3px] w-full bg-[#432010] rounded"
+          />
+          <motion.span
+            variants={botLine}
+            animate={isMenuOpen ? "open" : "closed"}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            className="absolute left-0 bottom-0 block h-[3px] w-full bg-[#432010] rounded"
+          />
+        </div>
+      </button>
 
-      {/* Mobile Menu */}
+      {/* MOBILE OVERLAY + DRAWER */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-16 left-0 w-full bg-white shadow-xl z-40 p-5 flex flex-col gap-5"
-          >
-            <motion.ul
+          <>
+            {/* overlay */}
+            <motion.div
+              key="overlay"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center text-[#432010] font-semibold gap-4"
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setIsMenuOpen(false)}
+            />
+            {/* drawer */}
+            <motion.aside
+              key="drawer"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 260, damping: 30 }}
+              className="fixed right-0 top-0 h-screen w-[78%] xs:w-[70%] sm:w-[60%] bg-white z-50 shadow-2xl p-6 flex flex-col"
+              role="dialog"
+              aria-modal="true"
             >
-              {navItems.map((item, index) => (
-                <motion.li
-                  key={item.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={safetyhelmets}
+                    alt="Logo"
+                    className="h-10 w-10 object-contain rounded"
+                  />
+                  <span className="text-lg font-bold text-[#432010]">
+                    Skillbase
+                  </span>
+                </div>
+                <button
+                  className="p-2 rounded-md hover:bg-gray-100"
+                  onClick={() => setIsMenuOpen(false)}
+                  aria-label="Close"
                 >
-                  <motion.div whileHover={{ scale: 1.1 }}>
+                  ✕
+                </button>
+              </div>
+
+              <ul className="space-y-2 text-[#432010] font-semibold">
+                {navItems.map((item, i) => (
+                  <motion.li
+                    key={item.title}
+                    initial={{ x: 20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: i * 0.06 }}
+                  >
                     <Link
                       to={item.path}
-                      className="hover:bg-gray-100 px-4 py-2 rounded-full block"
-                      onClick={() => setIsMenuOpen(false)} // Close menu when clicking a link
+                      className="block px-4 py-3 rounded-xl hover:bg-gray-100"
+                      onClick={() => setIsMenuOpen(false)}
                     >
                       {item.title}
                     </Link>
-                  </motion.div>
-                </motion.li>
-              ))}
-            </motion.ul>
-            <AnimatePresence mode="wait">
-              {isLoggedIn ? (
-                <motion.button
-                  key="logout-mobile"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleLogout}
-                  className="bg-gradient-to-r from-[#432010] to-yellow-700 text-lg rounded-full text-white font-bold px-12 py-2 hover:shadow-lg transition duration-300"
-                >
-                  Logout
-                </motion.button>
-              ) : (
-                <motion.div
-                  key="login-mobile"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                  </motion.li>
+                ))}
+              </ul>
+
+              <div className="mt-auto pt-6">
+                {isLoggedIn ? (
+                  <button
+                    onClick={handleLogout}
+                    className="w-full bg-gradient-to-r from-[#432010] to-yellow-700 text-white font-bold py-3 rounded-full shadow hover:shadow-lg transition"
+                  >
+                    Logout
+                  </button>
+                ) : (
                   <Link
                     to="/login"
-                    className="bg-gradient-to-r from-[#432010] to-yellow-700 text-lg rounded-full text-white font-bold px-12 py-2 hover:shadow-lg transition duration-300 block text-center"
-                    onClick={() => setIsMenuOpen(false)} // Close menu when clicking login
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block text-center w-full bg-gradient-to-r from-[#432010] to-yellow-700 text-white font-bold py-3 rounded-full shadow hover:shadow-lg transition"
                   >
                     Login
                   </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+                )}
+              </div>
+
+              <p className="mt-4 text-xs text-gray-400 text-center">
+                © {new Date().getFullYear()} Skillbase
+              </p>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
     </motion.nav>
