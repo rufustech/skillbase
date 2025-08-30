@@ -85,11 +85,11 @@ function SideBar() {
       icon: faToolbox,
       text: "Completions",
     },
-    {
-      path: "/quiz",
-      icon: faFileCircleQuestion,
-      text: "QUIZ",
-    },
+    // {
+    //   path: "/quiz",
+    //   icon: faFileCircleQuestion,
+    //   text: "QUIZ",
+    // },
   ];
 
   // Add admin menu item if user is admin

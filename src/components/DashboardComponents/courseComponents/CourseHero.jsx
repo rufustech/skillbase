@@ -2,11 +2,20 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { urls } from "../../constants";
 import { FaShieldAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function CourseHero() {
   const [featuredCourses, setFeaturedCourses] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Define gradient colors for cards
+  const gradients = [
+    "from-blue-500 to-blue-600",
+    "from-green-500 to-green-600",
+    "from-purple-500 to-purple-600",
+    "from-orange-500 to-orange-600",
+  ];
 
   async function fetchCourses() {
     try {
@@ -14,7 +23,7 @@ function CourseHero() {
       const response = await fetch(`${urls.url}/api/courses`);
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
-      setFeaturedCourses(data.data.slice(0, 4)); // Only take first 4 courses
+      setFeaturedCourses(data.data.slice(0, 4));
     } catch (error) {
       console.error("Error fetching courses:", error);
       setError("Failed to load featured courses");
@@ -27,7 +36,6 @@ function CourseHero() {
     fetchCourses();
   }, []);
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="px-12 sm:ml-64 mx-auto min-h-[400px] flex items-center justify-center">
@@ -87,20 +95,39 @@ function CourseHero() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-lg shadow-md hover:shadow-lg 
-                             transition-all duration-300 border border-gray-100"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <div className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <FaShieldAlt className="text-[#432010] text-xl" />
-                        <h3 className="text-lg font-semibold text-[#432010]">
+                    <Link to={`/lessons/courses/${course._id}`}>
+                      <div
+                        className={`
+                          h-full p-6 rounded-xl shadow-lg
+                          bg-gradient-to-br ${gradients[index]}
+                          transform transition-all duration-300
+                          hover:shadow-xl
+                          flex flex-col items-center justify-center
+                          text-white
+                          min-h-[200px]
+                        `}
+                      >
+                        <div className="mb-4">
+                          <FaShieldAlt className="text-4xl" />
+                        </div>
+                        <h3 className="text-xl font-semibold text-center mb-2">
                           {course.title || `Safety Course ${index + 1}`}
                         </h3>
+                        <p className="text-sm text-center opacity-90 line-clamp-2">
+                          {course.description ||
+                            "Course description loading..."}
+                        </p>
+
+                        {/* Optional: Add some metadata */}
+                        <div className="mt-4 pt-4 border-t border-white/20 w-full flex justify-between text-xs opacity-75">
+                          <span>Duration: 2h</span>
+                          <span>Lessons: {course.lessons?.length || 0}</span>
+                        </div>
                       </div>
-                      <p className="text-gray-600 text-sm">
-                        {course.description || "Course description loading..."}
-                      </p>
-                    </div>
+                    </Link>
                   </motion.div>
                 ))}
               </AnimatePresence>

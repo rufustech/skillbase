@@ -13,6 +13,11 @@ import {
   FaUsers,
   FaDatabase,
   FaBalanceScale,
+  FaPoll,
+  FaBullhorn,
+  FaSearchPlus,
+  FaTasks, // Changed from FaTasksAlt
+  FaClipboard, // New - for Bulletin
 } from "react-icons/fa";
 
 function DashMainSection() {
@@ -111,6 +116,41 @@ function DashMainSection() {
       link: "/legislation",
       color: "from-gray-600 to-gray-700",
       description: "Safety laws and regulations",
+    },
+    {
+      title: "Surveys",
+      icon: <FaPoll className="text-4xl" />,
+      link: "/surveys",
+      color: "from-emerald-500 to-emerald-600",
+      description: "Participate in safety surveys",
+    },
+    {
+      title: "Whistleblower",
+      icon: <FaBullhorn className="text-4xl" />,
+      link: "/whistleblower",
+      color: "from-rose-500 to-rose-600",
+      description: "Confidential reporting system",
+    },
+    {
+      title: "Inspections",
+      icon: <FaSearchPlus className="text-4xl" />,
+      link: "/inspections",
+      color: "from-amber-500 to-amber-600",
+      description: "Safety inspection reports",
+    },
+    {
+      title: "Action Items",
+      icon: <FaTasks className="text-4xl" />, // Changed icon
+      link: "/action-items",
+      color: "from-lime-500 to-lime-600",
+      description: "Track safety action items",
+    },
+    {
+      title: "Bulletin",
+      icon: <FaClipboard className="text-4xl" />,
+      link: "/bulletin",
+      color: "from-fuchsia-500 to-fuchsia-600", // New unique color
+      description: "Company announcements and updates",
     },
   ];
 

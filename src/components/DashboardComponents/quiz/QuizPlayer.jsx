@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { urls } from "../../constants";
 import jsPDF from "jspdf";
 import { format } from "date-fns";
+import { urls } from "../../constants";
 import { safetyhelmets } from "../../../assets";
 
 function QuizPlayer() {
   const { courseId } = useParams();
+  const navigate = useNavigate();
+
+  // Quiz + UI
   const [quiz, setQuiz] = useState(null);
   const [currentQ, setCurrentQ] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
@@ -15,37 +18,218 @@ function QuizPlayer() {
   const [submitted, setSubmitted] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState("");
-  const [certificateUrl, setCertificateUrl] = useState(null);
-  const [generating, setGenerating] = useState(false);
 
+  // User + cert
+  const [username, setUsername] = useState("");
+  const [generating, setGenerating] = useState(false);
+  const [certificateUrl, setCertificateUrl] = useState(null);
+  const [savedCertificate, setSavedCertificate] = useState(null);
+
+  // Load username and quiz
   useEffect(() => {
     const storedName = localStorage.getItem("username");
-    if (storedName) {
-      setUsername(storedName);
-    }
+    if (storedName) setUsername(storedName);
 
-    async function fetchQuiz() {
+    (async () => {
+      setLoading(true);
       try {
         const res = await fetch(`${urls.url}/api/quiz/course/${courseId}`);
         const data = await res.json();
-        console.log("Fetched quiz data:", data);
-
-        if (Array.isArray(data) && data.length > 0) {
-          setQuiz(data[0]);
-        } else {
-          setQuiz(null);
-        }
-      } catch (error) {
-        console.error("Error fetching quiz:", error);
+        setQuiz(Array.isArray(data) && data.length > 0 ? data[0] : null);
+      } catch (e) {
+        console.error("Fetch quiz error:", e);
+        setQuiz(null);
       } finally {
         setLoading(false);
       }
-    }
-
-    fetchQuiz();
+    })();
   }, [courseId]);
 
+  // Score %
+  const scorePercent = useMemo(() => {
+    if (!quiz?.questions?.length) return 0;
+    return Math.round((score / quiz.questions.length) * 100);
+  }, [score, quiz]);
+
+  // ---- API: save certificate (server generates certificateId)
+  const saveCertificateToDb = async (finalScore) => {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No authentication token found");
+
+    const payload = {
+      courseId, // ✅ matches backend
+      quizId: quiz._id, // ✅ matches backend
+      score: finalScore,
+    };
+
+    const res = await fetch(`${urls.url}/api/certificates/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    let body;
+    try {
+      body = await res.json();
+    } catch {
+      throw new Error(
+        `Create certificate failed: HTTP ${res.status} ${res.statusText}`
+      );
+    }
+
+    if (!res.ok || !body?.success) {
+      throw new Error(
+        body?.message || `Create certificate failed with ${res.status}`
+      );
+    }
+    return body.data; // certificate doc
+  };
+
+  // ---- PDF builder
+  const buildCertificatePdf = (certificate) => {
+    if (!certificate) return null;
+
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "px",
+      format: [800, 600],
+    });
+
+    // Background
+    doc.setFillColor(245, 245, 245);
+    doc.rect(0, 0, 800, 600, "F");
+
+    // Borders
+    doc.setDrawColor(66, 32, 16);
+    doc.setLineWidth(10);
+    doc.rect(20, 20, 760, 560);
+
+    doc.setDrawColor(218, 165, 32);
+    doc.setLineWidth(2);
+    doc.rect(40, 40, 720, 520);
+
+    // Logo (best effort)
+    try {
+      doc.addImage(safetyhelmets, "PNG", 350, 50, 100, 100);
+    } catch {}
+
+    // Title
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(40);
+    doc.setTextColor(66, 32, 16);
+    doc.text("Certificate of Completion", 400, 180, { align: "center" });
+    doc.setLineWidth(2);
+    doc.setDrawColor(218, 165, 32);
+    doc.line(250, 190, 550, 190);
+
+    // Body
+    doc.setFontSize(20);
+    doc.setFont("helvetica", "normal");
+    doc.text("This is to certify that", 400, 250, { align: "center" });
+
+    // Name
+    const displayName = (username || "Student").toUpperCase();
+    doc.setFontSize(30);
+    doc.setFont("helvetica", "bold");
+    const nameWidth = doc.getTextWidth(displayName);
+    doc.setDrawColor(218, 165, 32);
+    doc.line(400 - nameWidth / 2, 310, 400 + nameWidth / 2, 310);
+    doc.text(displayName, 400, 300, { align: "center" });
+
+    // Course
+    doc.setFontSize(20);
+    doc.setFont("helvetica", "normal");
+    doc.text("has successfully completed the course", 400, 350, {
+      align: "center",
+    });
+    doc.setFontSize(25);
+    doc.setFont("helvetica", "bold");
+    doc.text(quiz.title, 400, 400, { align: "center" });
+
+    // Meta
+    const dateText = certificate?.completionDate
+      ? format(new Date(certificate.completionDate), "MMMM dd, yyyy")
+      : format(new Date(), "MMMM dd, yyyy");
+
+    doc.setFontSize(15);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Date: ${dateText}`, 400, 450, { align: "center" });
+    doc.text(`Certificate Number: ${certificate.certificateId}`, 400, 470, {
+      align: "center",
+    });
+    doc.text(`Score: ${certificate.score}%`, 400, 490, { align: "center" });
+
+    // Signature
+    doc.setFontSize(13);
+    doc.text("Authorized Signature", 250, 520, { align: "center" });
+    doc.text("Safety Manager", 250, 535, { align: "center" });
+
+    // Watermark
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(60);
+    doc.setTextColor(245, 245, 245);
+    doc.text("SKILLBASE", 400, 300, { align: "center" });
+
+    return doc;
+  };
+
+  // ---- Generate (save + preview)
+  const generateCertificate = async () => {
+    setGenerating(true);
+    try {
+      if (scorePercent < 80) {
+        alert("Certificate is only available for scores 80% and above.");
+        return null;
+      }
+      const cert = await saveCertificateToDb(scorePercent);
+      setSavedCertificate(cert);
+
+      const doc = buildCertificatePdf(cert);
+      const previewUrl = doc?.output("dataurlstring");
+      if (previewUrl) setCertificateUrl(previewUrl);
+
+      return { doc, certificate: cert };
+    } catch (error) {
+      console.error("Generate cert error:", error);
+      alert(error.message || "Failed to generate certificate.");
+      return null;
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  // ---- Download (generate if needed)
+  const handleDownload = async () => {
+    if (generating) return;
+    setGenerating(true);
+    try {
+      let cert = savedCertificate;
+      if (!cert) {
+        const result = await generateCertificate();
+        if (!result?.certificate) return;
+        cert = result.certificate;
+      }
+
+      const doc = buildCertificatePdf(cert);
+      if (!doc) throw new Error("Could not build PDF");
+
+      const safe = (s) => (s || "").toString().replace(/[^\w\-]+/g, "_");
+      const fileName = `${safe(username || "student")}_${safe(
+        quiz?.title || "course"
+      )}_${cert.certificateId}.pdf`;
+      doc.save(fileName);
+    } catch (e) {
+      console.error("Download error:", e);
+      alert(e.message || "Error downloading certificate.");
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  // ---- Quiz handlers
   const handleNext = () => {
     const currentQuestion = quiz.questions[currentQ];
     if (selectedOption === currentQuestion.correctAnswer) {
@@ -61,10 +245,7 @@ function QuizPlayer() {
     if (currentQ < quiz.questions.length - 1) {
       setCurrentQ((prev) => prev + 1);
     } else {
-      setSubmitted(true);
-      if (getScorePercent() >= 80) {
-        generateCertificate();
-      }
+      setSubmitted(true); // show results; user can generate/download from there
     }
   };
 
@@ -75,140 +256,10 @@ function QuizPlayer() {
     setSubmitted(false);
     setSelectedOption("");
     setCertificateUrl(null);
+    setSavedCertificate(null);
   };
 
-  const getScorePercent = () => {
-    return Math.round((score / quiz.questions.length) * 100);
-  };
-
-  const generateCertificateNumber = () => {
-    return `CERT-${Date.now()}-${Math.random()
-      .toString(36)
-      .substr(2, 9)
-      .toUpperCase()}`;
-  };
-
-  const generateCertificate = () => {
-    setGenerating(true);
-    try {
-      const doc = new jsPDF({
-        orientation: "landscape",
-        unit: "px",
-        format: [800, 600],
-      });
-
-      // Set background
-      doc.setFillColor(245, 245, 245);
-      doc.rect(0, 0, 800, 600, "F");
-
-      // Add border
-      doc.setDrawColor(66, 32, 16); // #432010
-      doc.setLineWidth(10);
-      doc.rect(20, 20, 760, 560);
-
-      // Inner border with golden color
-      doc.setDrawColor(218, 165, 32); // Golden color
-      doc.setLineWidth(2);
-      doc.rect(40, 40, 720, 520);
-
-      // Add logo at the top
-      doc.addImage(safetyhelmets, "PNG", 350, 50, 100, 100); // Adjust position and size as needed
-
-      // Certificate title
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(40);
-      doc.setTextColor(66, 32, 16);
-      doc.text("Certificate of Completion", 400, 180, { align: "center" });
-      // Add decorative line under title
-      doc.setLineWidth(2);
-      doc.setDrawColor(218, 165, 32);
-      doc.line(250, 190, 550, 190);
-
-      // Certificate text
-      doc.setFontSize(20);
-      doc.setFont("helvetica", "normal");
-      doc.text("This is to certify that", 400, 250, { align: "center" });
-
-      // Recipient name
-      doc.setFontSize(30);
-      doc.setFont("helvetica", "bold");
-      const nameWidth = doc.getTextWidth(username.toUpperCase());
-
-      // Add underline for name
-      doc.setDrawColor(218, 165, 32);
-      doc.line(400 - nameWidth / 2, 310, 400 + nameWidth / 2, 310);
-      doc.text(username.toUpperCase(), 400, 300, { align: "center" });
-
-      // Course completion text
-      doc.setFontSize(20);
-      doc.setFont("helvetica", "normal");
-      doc.text("has successfully completed the course", 400, 350, {
-        align: "center",
-      });
-
-      // Course name
-      doc.setFontSize(25);
-      doc.setFont("helvetica", "bold");
-      doc.text(quiz.title, 400, 400, { align: "center" });
-
-      // Add signature lines
-      // doc.setLineWidth(1);
-      // doc.setDrawColor(66, 32, 16);
-
-      // Left signature
-      // doc.line(200, 500, 300, 500);
-      doc.setFontSize(13);
-      doc.text("Authorized Signature", 250, 520, { align: "center" });
-      doc.text("Safety Manager", 250, 535, { align: "center" }); // Added Safety Manager title
-
-      // Right signature
-      // doc.line(500, 500, 600, 500);
-      // doc.text("Date", 550, 520, { align: "center" });
-
-      // Date and certificate number
-      const date = format(new Date(), "MMMM dd, yyyy");
-      const certNumber = generateCertificateNumber();
-
-      doc.setFontSize(15);
-      doc.text(`Date: ${date}`, 400, 450, { align: "center" });
-      doc.text(`Certificate Number: ${certNumber}`, 400, 470, {
-        align: "center",
-      });
-      doc.text(`Score: ${getScorePercent()}%`, 400, 490, { align: "center" });
-
-      // Add watermark
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(60);
-      doc.setTextColor(245, 245, 245);
-      doc.save();
-      doc.rotate(45, 400, 300);
-      doc.text("SKILLBASE", 400, 300, { align: "center" });
-      doc.restore();
-
-      // Convert to data URL for preview
-      const dataUrl = doc.output("dataurlstring");
-      setCertificateUrl(dataUrl);
-      setGenerating(false);
-
-      return doc;
-    } catch (error) {
-      console.error("Error generating certificate:", error);
-      setGenerating(false);
-    }
-  };
-
-
- 
-  
-  const handleDownload = () => {
-    try {
-      const doc = generateCertificate();
-      doc.save(`${username}_${quiz.title}_certificate.pdf`);
-    } catch (error) {
-      console.error("Error downloading certificate:", error);
-    }
-  };
-
+  // ---- UI
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -262,7 +313,7 @@ function QuizPlayer() {
                   key={idx}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.1 }}
+                  transition={{ delay: idx * 0.08 }}
                 >
                   <label className="flex items-center cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition-colors">
                     <input
@@ -301,10 +352,10 @@ function QuizPlayer() {
             className="text-center"
           >
             <h3 className="text-xl font-semibold mb-4">
-              Your Score: {getScorePercent()}%
+              Your Score: {scorePercent}%
             </h3>
 
-            {getScorePercent() >= 80 ? (
+            {scorePercent >= 80 ? (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -314,6 +365,7 @@ function QuizPlayer() {
                   <span className="capitalize">{username}</span> You passed.
                 </p>
 
+                {/* Preview (optional, appears after generation) */}
                 {certificateUrl && (
                   <div className="mb-6">
                     <div className="relative w-full max-w-md mx-auto h-64 border-4 border-[#432010] rounded-lg overflow-hidden">
@@ -326,24 +378,31 @@ function QuizPlayer() {
                   </div>
                 )}
 
+                {/* Single button: appears immediately after passing */}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={handleDownload}
+                  onClick={
+                    savedCertificate ? handleDownload : generateCertificate
+                  }
                   disabled={generating}
-                  className="mt-4 mb-4 px-6 py-2 bg-[#432010] text-white rounded-full hover:bg-opacity-90 transition-all duration-300"
+                  className="mt-2 mb-4 px-6 py-2 bg-[#432010] text-white rounded-full hover:bg-opacity-90 transition-all duration-300 disabled:opacity-50"
                 >
-                  {generating ? "Generating..." : "Download Certificate"}
+                  {generating
+                    ? "Working..."
+                    : savedCertificate
+                    ? "Download Certificate"
+                    : "Generate Certificate"}
                 </motion.button>
 
                 <br />
-                <motion.a
+                <motion.button
                   whileHover={{ scale: 1.05 }}
-                  href="/dashboard"
-                  className="mt-4 text-blue-600 hover:underline inline-block"
+                  onClick={() => navigate("/courses")}
+                  className="mt-2 text-blue-600 hover:underline inline-block"
                 >
-                  Back to Dashboard
-                </motion.a>
+                  Back to Trainings
+                </motion.button>
               </motion.div>
             ) : (
               <motion.div

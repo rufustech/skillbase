@@ -40,13 +40,20 @@ function SubHeader() {
     navigate("/");
   };
 
-  const navItems = [
-    { title: "Home", path: "/" },
-    { title: "Certifications", path: "/certs" },
-    { title: "About", path: "/about" },
-    { title: "Contact", path: "/contact" },
-    { title: "News", path: "/news" },
-  ];
+  const navItems = isLoggedIn
+    ? [
+        { title: "Dashboard", path: "/dashboard" },
+        { title: "Certifications", path: "/certs" },
+        { title: "About", path: "/about" },
+        { title: "Contact", path: "/contact" },
+        { title: "News", path: "/news" },
+      ]
+    : [
+        // { title: "Certifications", path: "/certs" },
+        { title: "About", path: "/about" },
+        { title: "Contact", path: "/contact" },
+        { title: "Blog", path: "/news" },
+      ];
 
   // hamburger line variants
   const topLine = {

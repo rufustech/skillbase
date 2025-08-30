@@ -19,33 +19,60 @@ function Certificates() {
   }, []);
 
   const fetchCertificates = async () => {
+    setIsLoading(true);
+    setError(null);
     try {
-      setIsLoading(true);
       const token = localStorage.getItem("token");
+      const endpoint = `${urls?.url}/api/certificates/user-certificates`;
 
-      const response = await fetch(
-        `${urls.url}/api/certificates/user-certificates`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      console.log("[CERTS] endpoint:", endpoint, "token present:", !!token);
+
+      if (!urls?.url) {
+        throw new Error(
+          "Config error: urls.url is undefined (check constants import/path/export)."
+        );
+      }
+      if (!token) {
+        throw new Error("You are not logged in. Please log in again.");
+      }
+
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+        // credentials not needed since you use Bearer, but harmless:
+        // credentials: "include",
+      });
+
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = null;
+      }
+
+      if (response.status === 401) {
+        // Token invalid/expired
+        setError(data?.message || "Session expired. Please log in again.");
+        // optional: localStorage.clear(); navigate("/login");
+        return;
+      }
 
       if (!response.ok) {
-        throw new Error("Failed to fetch certificates");
+        throw new Error(
+          data?.message ||
+            `Failed to fetch certificates (HTTP ${response.status})`
+        );
       }
 
-      const data = await response.json();
-
-      if (data.success) {
-        setCertificates(data.data);
-      } else {
-        throw new Error(data.message);
+      if (!data?.success) {
+        throw new Error(data?.message || "Failed to fetch certificates");
       }
-    } catch (error) {
-      console.error("Error:", error);
-      setError(error.message);
+
+      setCertificates(Array.isArray(data.data) ? data.data : []);
+    } catch (err) {
+      console.error("[CERTS] Fetch error:", err);
+      setError(err.message || "Unexpected error fetching certificates");
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +118,7 @@ function Certificates() {
                   <motion.h2
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-2xl leading-none text-[#432010] md:text-[45px] font-bold mb-6"
+                    className="text-xl leading-none text-[#432010] md:text-[45px]  mb-6"
                   >
                     Your Certificates
                   </motion.h2>
@@ -100,7 +127,11 @@ function Certificates() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-lg opacity-80 leading-6 mb-6"
                   >
-                    Hello {username}, here are your completed courses
+                    Hello{" "}
+                    <span className="font-bold">
+                      {username}, {}
+                    </span>
+                    your completed courses
                   </motion.p>
                 </div>
               </div>
@@ -134,13 +165,13 @@ function Certificates() {
                               <img
                                 src={safetycertificate}
                                 alt=""
-                                className="max-w-full h-auto mx-auto rounded-xl max-h-[200px] object-cover mb-6"
+                                className="max-w-full h-auto mx-auto rounded-xl max-h-[200px] object-cover mb-3"
                               />
-                              <h4 className="text-xl font-semibold mb-4">
+                              <h4 className="text-md font-semibold mb-4">
                                 {cert.course.title}
                               </h4>
                               <p className="text-sm text-gray-500">
-                                Issued:{" "}
+                                <span className="font-bold">Issued:</span>{" "}
                                 {new Date(cert.issuedAt).toLocaleDateString()}
                               </p>
                               <p className="text-xs text-gray-400">

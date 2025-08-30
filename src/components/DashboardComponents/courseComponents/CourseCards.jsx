@@ -8,6 +8,20 @@ function CourseCards() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Define gradient colors for cards
+  const gradients = [
+    "from-blue-500 to-blue-600",
+    "from-green-500 to-green-600",
+    "from-purple-500 to-purple-600",
+    "from-orange-500 to-orange-600",
+    "from-pink-500 to-pink-600",
+    "from-teal-500 to-teal-600",
+    "from-red-500 to-red-600",
+    "from-indigo-500 to-indigo-600",
+    "from-yellow-500 to-yellow-600",
+    "from-cyan-500 to-cyan-600",
+  ];
+
   async function fetchCourses() {
     try {
       setIsLoading(true);
@@ -41,7 +55,7 @@ function CourseCards() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="px-12 sm:ml-64 mx-auto min-h-[400px] flex items-center justify-center">
+      <div className="px- sm:ml-64 mx-auto min-h-[400px] flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -57,7 +71,7 @@ function CourseCards() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="px-12 sm:ml-64 mx-auto min-h-[400px] flex flex-col items-center justify-center"
+        className="grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2 gap-4 px-4 place-items-center"
       >
         <p className="text-red-500 text-lg mb-4">{error}</p>
         <motion.button
@@ -102,12 +116,12 @@ function CourseCards() {
       >
         More Safety Courses
       </motion.h2>
-
-      <section className="py-4">
+    
+      <section className="py-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2 gap-4 px-4"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5 gap-6 place-items-center" // Fixed gap
         >
           <AnimatePresence>
             {courses.map((course, index) => (
@@ -117,14 +131,17 @@ function CourseCards() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ delay: index * 0.1 }}
+                className="w-full p-3" // Added padding for spacing
               >
-                <CourseCard course={course} />
+                <CourseCard
+                  course={course}
+                  gradient={gradients[index % gradients.length]}
+                />
               </motion.div>
             ))}
           </AnimatePresence>
         </motion.div>
       </section>
-
       {/* Retry Button - Only show if courses array is empty */}
       {courses.length === 0 && (
         <motion.div
