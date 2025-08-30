@@ -61,7 +61,7 @@ function ConditionalSubHeader() {
   const location = useLocation();
 
   // Exclude SubHeader for "/dashboard" route
-  if (location.pathname === "/blog") {
+  if (location.pathname === "/dashboard") {
     return null;
   }
 
