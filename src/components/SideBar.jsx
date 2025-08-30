@@ -55,7 +55,7 @@ function SideBar() {
       icon: faUser,
       text: (
         <>
-          <span className="capitalize">{username}'s Dashboard</span>
+          <span className="">{username}'s Dashboard</span>
         </>
       ),
     },
