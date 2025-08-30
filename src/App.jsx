@@ -34,7 +34,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin" element={<Admin />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard withHeader />} />
             <Route path="/completions" element={<Completions />} />
             <Route path="/safety-stats" element={<SafetyStats />} />
             <Route path="/courses" element={<Courses />} />
