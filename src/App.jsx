@@ -58,13 +58,15 @@ function App() {
 
 // Helper Component to conditionally render SubHeader
 function ConditionalSubHeader() {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
-  // Exclude SubHeader for "/dashboard" route
-  if (location.pathname === "/dashboard") {
-    return null;
-  }
+  // Hide header on /dashboard, /dashboard/, or any nested dashboard route
+  const hideHeader =
+    pathname === "/dashboard" ||
+    pathname === "/dashboard/" ||
+    pathname.startsWith("/dashboard/");
 
+  if (hideHeader) return null;
   return <SubHeader />;
 }
 
