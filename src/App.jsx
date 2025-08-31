@@ -20,6 +20,17 @@ import Reset from "./components/Registration/Reset";
 import AdminRoute from "./components/AdminRoute";
 import Completions from "./components/DashboardComponents/Completions";
 import SafetyStats from "./components/SafetyStats";
+import SurveyForm from "./components/SurveyForm.jsx";
+import Bulletin from "./components/Bulletin.jsx";
+import PolicyManager from "./components/PolicyManager.jsx";
+import Whistleblower from "./components/Whistleblower.jsx";
+import ActionItems from "./components/ActionItems.jsx";
+import Orientations from "./components/Orientations.jsx";
+import SafetyMeetings from "./components/SafetyMeetings.jsx";
+import SafetyDataSheets from "./components/SafetyDataSheets.jsx";
+import Legislation from "./components/Legislation.jsx";
+import Inspections from "./components/Inspections.jsx";
+import Competencies from "./components/Competencies.jsx";
 
 function App() {
   return (
@@ -42,7 +53,19 @@ function App() {
             <Route path="/certs" element={<Certificates />} />
             <Route path="/lessons/courses/:courseId/" element={<Lessons />} />
             <Route path="/quiz/course/:courseId" element={<QuizPlayer />} />
-
+            <Route path="surveys" element={<SurveyForm />} />
+            <Route path="/bulletin" element={<Bulletin />} />
+            <Route path="/policies" element={<PolicyManager />} />
+            <Route path="/whistleblower" element={<Whistleblower />} />
+            <Route path="/action-items" element={<ActionItems />} />
+            <Route path="/procedures" element={<ActionItems />} />
+            <Route path="/legislation" element={<Legislation />} />
+            <Route path="/orientations" element={<Orientations />} />
+            <Route path="/inspections" element={<Inspections />} />
+            <Route path="/safety-meetings" element={<SafetyMeetings />} />
+            <Route path="/competencies" element={<Competencies />} />
+            <Route path="/sds" element={<SafetyDataSheets />} />
+            <Route path="/quiz/course/:courseId/" element={<QuizPlayer />} />
             {/* Admin Routes */}
             <Route element={<AdminRoute />}>
               <Route path="/loadlesson" element={<LessonFormSubmit />} />

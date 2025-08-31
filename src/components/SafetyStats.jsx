@@ -11,6 +11,8 @@ import {
 import SideBar from "./SideBar";
 
 function SafetyStats() {
+  const currentYear = new Date().getFullYear();
+
   const [safetyData, setSafetyData] = useState({
     daysWithoutIncident: 156,
     totalIncidents: 3,
@@ -19,7 +21,7 @@ function SafetyStats() {
     lostTimeInjuries: 0,
     safetyMeetingAttendance: 98,
     lastIncidentDate: "2024-01-15",
-    currentYear: 2024,
+    currentYear: currentYear,
   });
 
   const stats = [

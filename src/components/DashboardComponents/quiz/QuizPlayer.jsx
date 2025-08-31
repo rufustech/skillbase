@@ -18,6 +18,7 @@ function QuizPlayer() {
   const [submitted, setSubmitted] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState(null);
 
   // User + cert
   const [username, setUsername] = useState("");
@@ -54,38 +55,79 @@ function QuizPlayer() {
   // ---- API: save certificate (server generates certificateId)
   const saveCertificateToDb = async (finalScore) => {
     const token = localStorage.getItem("token");
-    if (!token) throw new Error("No authentication token found");
+    if (!token) throw new Error("Not logged in (missing token).");
+
+    // Verify all required da data is present
+    if (!courseId || !quiz?._id) {
+      throw new Error("Missing required course or quiz data");
+    }
 
     const payload = {
-      courseId, // ✅ matches backend
-      quizId: quiz._id, // ✅ matches backend
+      courseId,
+      quizId: quiz._id,
       score: finalScore,
     };
 
-    const res = await fetch(`${urls.url}/api/certificates/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(payload),
+    // Log the request for debugging
+    console.log("Sending certificate request:", {
+      endpoint: `${urls.url}/api/certificates/create`,
+      payload,
     });
 
-    let body;
     try {
-      body = await res.json();
-    } catch {
-      throw new Error(
-        `Create certificate failed: HTTP ${res.status} ${res.statusText}`
-      );
-    }
+      const res = await fetch(`${urls.url}/api/certificates/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+        // Add these options if you're dealing with cookies
+        credentials: "include",
+      });
 
-    if (!res.ok || !body?.success) {
-      throw new Error(
-        body?.message || `Create certificate failed with ${res.status}`
-      );
+      // Enhanced error handling
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Server Response:", {
+          status: res.status,
+          statusText: res.statusText,
+          body: errorText,
+        });
+
+        let errorMessage;
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.message;
+        } catch {
+          errorMessage = `Server error: ${res.status} ${res.statusText}`;
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      const data = await res.json();
+
+      // Validate response data
+      if (!data.success || !data.data) {
+        throw new Error("Invalid response format from server");
+      }
+
+      // Log successful response
+      console.log("Certificate created successfully:", data.data);
+
+      return data.data;
+    } catch (error) {
+      if (
+        error instanceof TypeError &&
+        error.message.includes("Failed to fetch")
+      ) {
+        throw new Error(
+          `Network error: Please check your connection and API URL (${urls.url})`
+        );
+      }
+      throw error;
     }
-    return body.data; // certificate doc
   };
 
   // ---- PDF builder
@@ -178,23 +220,44 @@ function QuizPlayer() {
 
   // ---- Generate (save + preview)
   const generateCertificate = async () => {
+    if (generating) return;
+
     setGenerating(true);
     try {
-      if (scorePercent < 80) {
-        alert("Certificate is only available for scores 80% and above.");
-        return null;
+      // Validate required data
+      if (!quiz?._id) {
+        throw new Error("Quiz data not available");
       }
+      if (!courseId) {
+        throw new Error("Course ID not available");
+      }
+      if (!username) {
+        throw new Error("Username not available");
+      }
+      if (scorePercent < 80) {
+        throw new Error("Score must be 80% or higher to generate certificate");
+      }
+
       const cert = await saveCertificateToDb(scorePercent);
+      if (!cert || !cert.certificateId) {
+        throw new Error("Invalid certificate data received");
+      }
+
       setSavedCertificate(cert);
 
       const doc = buildCertificatePdf(cert);
-      const previewUrl = doc?.output("dataurlstring");
-      if (previewUrl) setCertificateUrl(previewUrl);
+      if (!doc) {
+        throw new Error("Failed to generate PDF");
+      }
+
+      const previewUrl = doc.output("dataurlstring");
+      setCertificateUrl(previewUrl);
 
       return { doc, certificate: cert };
     } catch (error) {
-      console.error("Generate cert error:", error);
-      alert(error.message || "Failed to generate certificate.");
+      console.error("Certificate generation failed:", error);
+      // Show error in UI
+      setApiError(error.message);
       return null;
     } finally {
       setGenerating(false);
@@ -208,18 +271,26 @@ function QuizPlayer() {
     try {
       let cert = savedCertificate;
       if (!cert) {
+        console.log("No saved certificate, generating new one...");
         const result = await generateCertificate();
+        console.log("Generate result:", result);
         if (!result?.certificate) return;
         cert = result.certificate;
       }
 
+      console.log("Building PDF with cert:", cert);
       const doc = buildCertificatePdf(cert);
-      if (!doc) throw new Error("Could not build PDF");
+      if (!doc) {
+        console.error("PDF generation failed");
+        throw new Error("Could not build PDF");
+      }
 
       const safe = (s) => (s || "").toString().replace(/[^\w\-]+/g, "_");
       const fileName = `${safe(username || "student")}_${safe(
         quiz?.title || "course"
       )}_${cert.certificateId}.pdf`;
+
+      console.log("Saving PDF with filename:", fileName);
       doc.save(fileName);
     } catch (e) {
       console.error("Download error:", e);
@@ -364,7 +435,6 @@ function QuizPlayer() {
                   🎉 Congratulations!{" "}
                   <span className="capitalize">{username}</span> You passed.
                 </p>
-
                 {/* Preview (optional, appears after generation) */}
                 {certificateUrl && (
                   <div className="mb-6">
@@ -377,8 +447,20 @@ function QuizPlayer() {
                     </div>
                   </div>
                 )}
-
                 {/* Single button: appears immediately after passing */}
+
+                {apiError && (
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative my-4">
+                    <strong className="font-bold">Error:</strong>
+                    <span className="block sm:inline ml-2">{apiError}</span>
+                    <button
+                      onClick={() => setApiError(null)}
+                      className="absolute top-0 right-0 px-4 py-3"
+                    >
+                      <span className="text-red-500">×</span>
+                    </button>
+                  </div>
+                )}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -386,15 +468,40 @@ function QuizPlayer() {
                     savedCertificate ? handleDownload : generateCertificate
                   }
                   disabled={generating}
-                  className="mt-2 mb-4 px-6 py-2 bg-[#432010] text-white rounded-full hover:bg-opacity-90 transition-all duration-300 disabled:opacity-50"
+                  className="mt-2 mb-4 px-6 py-2 bg-[#432010] text-white rounded-full 
+             hover:bg-opacity-90 transition-all duration-300 
+             disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {generating
-                    ? "Working..."
-                    : savedCertificate
-                    ? "Download Certificate"
-                    : "Generate Certificate"}
+                  {generating ? (
+                    <span className="flex items-center">
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Working...
+                    </span>
+                  ) : savedCertificate ? (
+                    "Download Certificate"
+                  ) : (
+                    "Generate Certificate"
+                  )}
                 </motion.button>
-
                 <br />
                 <motion.button
                   whileHover={{ scale: 1.05 }}
